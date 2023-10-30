@@ -3,6 +3,14 @@ import { AppBar, Avatar, Grid, Toolbar, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import avatar from '../assets/image/ThaiAkitech.png'
 const TheHeader = () => {
+
+    const serialized = localStorage.getItem("session-user")
+    const parsedData = JSON.parse(serialized);
+    if (parsedData && parsedData.username) {
+        console.log(parsedData.username); 
+      } else {
+        console.log("Username not found");
+      }
     return (
         <>
             <AppBar color="primary" position="sticky" elevation={0}>
@@ -11,7 +19,7 @@ const TheHeader = () => {
                         <Grid item xs />
                         <Grid item>
                             <Typography color="inherit" variant="h5" component="h1">
-                                อุ้มหลอง
+                                {parsedData.username}
                             </Typography>
                         </Grid>
                         <Grid item>
