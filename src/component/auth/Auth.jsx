@@ -3,7 +3,7 @@ import Swal from "sweetalert2"
 import jwt_decode from "jwt-decode"
 import { AuthProvider } from "../../role-access/authContext"
 import Authoring from "./Authoring"
-import { UserModel } from "../../model"
+import { UserModel } from "../../model/base"
 import { token } from "../../config/access-token"
 
 const user_model = new UserModel()

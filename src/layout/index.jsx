@@ -1,6 +1,6 @@
 import TheLayout from './layout'
 import TheNavigator from './navigator'
-import TheContent from './appcontent'
+import TheContent from './Content'
 import TheHeader from './header'
 export {
     TheNavigator,

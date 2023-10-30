@@ -2,9 +2,7 @@ import React from 'react';
 import { AppBar, Avatar, Grid, Toolbar, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import avatar from '../assets/image/ThaiAkitech.png'
-const TheHeader = (props) => {
-    const { onDrawerToggle } = props;
-
+const TheHeader = () => {
     return (
         <>
             <AppBar color="primary" position="sticky" elevation={0}>
