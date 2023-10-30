@@ -1,9 +1,5 @@
 import React, { createContext, useEffect, useState } from "react"
-// import {
-//   TheContent,
-//   AppSidebar,
-//   // AppTopbar,
-// } from "./index"
+import ThePaperbase from "./paperbase"
 
 import { AuthConsumer } from "../role-access/authContext"
 const Login = React.lazy(() => import("../views/pages/Login"))
@@ -14,11 +10,15 @@ const TheLayout = () => {
     setData(newData)
   }
   return (
+    // <div>
+    // </div>
     <AuthConsumer>
       {({ authenticated, user, permissions }) =>
         authenticated ? (
           <div>
-            <AppSidebar PERMISSIONS={permissions} USER={user}  />
+            <TheSidebar PERMISSIONS={permissions} USER={user} />
+      <ThePaperbase/>
+
             {/* <TheFooter /> */}
           </div>
         ) : (

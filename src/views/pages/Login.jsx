@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import { AuthConsumer } from "../../role-access/authContext"
-import icon_ta from "../../assets/image/abg.png"
-import bg_login from "../../assets/image/zzzz.png" 
+import icon_ta from "../../assets/image/ThaiAkitechPro.png"
+import bg_login from "../../assets/image/livestream1.png" 
 import React, { useState } from "react"
 import { InputText } from "primereact/inputtext"
 import { Button } from "primereact/button"
@@ -14,7 +14,7 @@ const Login = () => {
   })
 
   return (
-    <AuthConsumer>     {({ _handleLogin }) => (
+    <AuthConsumer>{({ _handleLogin }) => (
 
         <div className=" flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden" style={{ backgroundImage: `url(${bg_login})`, width: "auto", height: "auto" }}>
           <div className="flex flex-column align-items-center justify-content-center">
@@ -24,16 +24,15 @@ const Login = () => {
 
               }}
             >
-
               <div
                 className="w-full surface-card py-8 px-5 sm:px-8"
-                style={{ borderRadius: "53px", opacity: "0.94" }}
+                style={{ borderRadius: "53px", opacity: "0.88" }}
               >
                 <form onSubmit={(e) => { e.preventDefault(); _handleLogin(state) }}>
                   <div className="text-center mb-5">
                     <img src={icon_ta} alt="icon_ta" width="200" height="200" className="mb-3" />
                     <div className="text-900 text-2xl font-medium mb-3">
-                      ระบบบริหารจัดการข้อมูลสารสนเทศขนาดใหญ่
+                      Live Stream
                     </div>
                     <span className="text-400 font-medium">
                     </span>
