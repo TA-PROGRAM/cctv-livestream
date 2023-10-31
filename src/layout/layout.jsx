@@ -92,7 +92,6 @@ theme = {
       },
     },
     MuiTab: {
-
       styleOverrides: {
         root: {
           textTransform: 'none',
@@ -196,7 +195,7 @@ export default function TheLayout() {
                     onClose={handleDrawerToggle}
                   />
                 )}
-                <TheNavigator 
+                <TheNavigator
                   PaperProps={{ style: { width: drawerWidth } }}
                   sx={{ display: { sm: 'block', xs: 'none' } }}
                 />
@@ -204,7 +203,7 @@ export default function TheLayout() {
               <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                 <TheHeader onDrawerToggle={handleDrawerToggle} />
                 <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
-                  <TheContent PERMISSIONS={permissions} USER={user}/>
+                  <TheContent PERMISSIONS={permissions} USER={user} />
                 </Box>
                 <Box component="footer" sx={{ p: 2, bgcolor: '#eaeff1' }}>
                   <Copyright />
@@ -212,7 +211,7 @@ export default function TheLayout() {
               </Box>
             </Box>
           </ThemeProvider>
-        
+
         ) : (
           <Login />
         )

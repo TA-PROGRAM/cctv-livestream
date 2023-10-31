@@ -196,7 +196,7 @@ export default function ThePaperbase() {
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
           <TheHeader onDrawerToggle={handleDrawerToggle} />
           <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
-            <TheContent PERMISSIONS={permissions} USER={user} />
+            {/* <TheContent PERMISSIONS={permissions} USER={user} /> */}
           </Box>
           <Box component="footer" sx={{ p: 2, bgcolor: '#eaeff1' }}>
             <Copyright />
