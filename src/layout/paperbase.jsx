@@ -13,7 +13,6 @@ function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" align="center">
       {'© 2023 - CCTV Live Streaming | v.1.0.0.1 | Power by Thai Akitech Pro | Dev'}
-      {new Date().getFullYear()}.
     </Typography>
   );
 }
@@ -87,6 +86,7 @@ theme = {
       },
     },
     MuiTab: {
+
       styleOverrides: {
         root: {
           textTransform: 'none',
@@ -196,7 +196,7 @@ export default function ThePaperbase() {
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
           <TheHeader onDrawerToggle={handleDrawerToggle} />
           <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
-            {/* <TheContent /> */}
+            <TheContent PERMISSIONS={permissions} USER={user} />
           </Box>
           <Box component="footer" sx={{ p: 2, bgcolor: '#eaeff1' }}>
             <Copyright />

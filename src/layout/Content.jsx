@@ -12,15 +12,15 @@ const loading = (
 const TheContent = (props) => {
   const history = useHistory()
   const { PERMISSIONS, USER } = props
-  // const _generatePermission = (data) =>
-  //   PERMISSIONS.find((item) => item.menu_name == data.key) || {
-  //     permission_view: false,
-  //     permission_add: false,
-  //     permission_edit: false,
-  //     permission_approve: false,
-  //     permission_cancel: false,
-  //     permission_delete: false,
-  //   }
+  const _generatePermission = (data) =>
+    PERMISSIONS.find((item) => item.menu_name == data.key) || {
+      permission_view: false,
+      permission_add: false,
+      permission_edit: false,
+      permission_approve: false,
+      permission_cancel: false,
+      permission_delete: false,
+    }
   return (
     <Suspense fallback={loading}>
       <Switch>

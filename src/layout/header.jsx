@@ -7,7 +7,6 @@ const TheHeader = () => {
     const serialized = localStorage.getItem("session-user")
     const parsedData = JSON.parse(serialized);
     if (parsedData && parsedData.username) {
-        console.log(parsedData.username); 
       } else {
         console.log("Username not found");
       }

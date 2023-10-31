@@ -18,7 +18,6 @@ const categories = [
     children: [
       { id: 'ค้นหาป้ายทะเบียน', icon: <SearchIcon /> },
       { id: 'ค้นหาบุคคล', icon: <PersonSearchIcon /> },
-      // { id: 'ออกจากระบบ', icon: <LogoutIcon /> },
     ],
   },
 ];
@@ -57,6 +56,12 @@ export default function TheNavigator(props) {
     }
   };
 
+  const handleMenuClickItem = (id) => {
+    // if (id === 'ออกจากระบบ') {
+    //   logout();
+    // }
+  };
+
   const logout = async () => {
     localStorage.clear();
     window.location.reload();
@@ -81,7 +86,7 @@ export default function TheNavigator(props) {
             </ListItem>
             {children.map(({ id: childId, icon }) => (
               <ListItem disablePadding key={childId}>
-                <ListItemButton onClick={() => handleMenuClick(childId)} sx={item}>
+                <ListItemButton onClick={() => handleMenuClickItem(childId)} sx={item}>
                   <ListItemIcon>{icon}</ListItemIcon>
                   <ListItemText>{childId}</ListItemText>
                 </ListItemButton>

@@ -14,7 +14,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-export default function TheContent() {
+export default function Dashboard() {
   return (
     <Box>
       <Grid container spacing={2}>
