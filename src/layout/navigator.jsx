@@ -11,13 +11,17 @@ import HomeIcon from '@mui/icons-material/Home';
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import SearchIcon from '@mui/icons-material/Search';
 import LogoutIcon from '@mui/icons-material/Logout';
+import img_candidate from '../assets/image/candidate.png';
+import img_license from '../assets/image/license-plate.png';
+import img_home from '../assets/image/home.png';
 
 const categories = [
   {
-    id: 'เมนู',
+    id: '',
     children: [
-      { id: 'ค้นหาป้ายทะเบียน', icon: <SearchIcon /> },
-      { id: 'ค้นหาบุคคล', icon: <PersonSearchIcon /> },
+      { id: 'หน้าแรก', src: img_home },
+      { id: 'ค้นหาป้ายทะเบียน', src: img_candidate },
+      { id: 'ค้นหาบุคคล', src: img_license },
     ],
   },
 ];
@@ -73,21 +77,28 @@ export default function TheNavigator(props) {
         <ListItem sx={{ ...item, ...itemCategory, fontSize: 20, color: '#fff' }}>
           CCTV Live Streaming
         </ListItem>
-        <ListItem sx={{ ...item, ...itemCategory }}>
-          <ListItemIcon>
-            <HomeIcon />
-          </ListItemIcon>
-          <ListItemText>หน้าหลัก</ListItemText>
-        </ListItem>
+       
         {categories.map(({ id, children }) => (
           <Box key={id} sx={{ bgcolor: '#101F33' }}>
             <ListItem sx={{ py: 2, px: 3 }}>
               <ListItemText sx={{ color: '#fff' }}>{id}</ListItemText>
             </ListItem>
-            {children.map(({ id: childId, icon }) => (
+            {children.map(({ id: childId, icon, src }) => (
               <ListItem disablePadding key={childId}>
                 <ListItemButton onClick={() => handleMenuClickItem(childId)} sx={item}>
                   <ListItemIcon>{icon}</ListItemIcon>
+                  <img
+                    src={src}
+                    alt={childId}
+                    style={{
+                      width: '12%',
+                      height: '12%',
+                      marginRight: '1rem', 
+                      color:"white",
+                      padding:"2px",
+                      marginBottom:"2px"
+                    }}
+                  />
                   <ListItemText>{childId}</ListItemText>
                 </ListItemButton>
               </ListItem>
