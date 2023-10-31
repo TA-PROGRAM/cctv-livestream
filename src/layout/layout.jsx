@@ -8,7 +8,6 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import TheContent from './Content';
 import TheHeader from './header';
-import Paperbase from './paperbase'
 
 import { AuthConsumer } from "../role-access/authContext"
 const Login = React.lazy(() => import("../views/pages/Login"))
