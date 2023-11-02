@@ -64,7 +64,7 @@ const Dashboard = (props) => {
         <Grid container spacing={2}>
           <Grid item sm={4}>
             <CustomPaper>
-              <CardContent >
+              <CardContent>
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
                   <Typography sx={{ fontSize: 16, fontWeight: "bold" }} color="text.secondary" gutterBottom>
                     จำนวน site โครงการทั้งหมด
@@ -74,19 +74,24 @@ const Dashboard = (props) => {
                   </Typography>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", marginLeft: "2rem" }}>
-                  <Typography sx={{ fontSize: 30, fontWeight: "bold", display: "flex" }} color="text.secondary" gutterBottom>
-                    <Typography sx={{ fontSize: "30px" , fontWeight: "bold"}}>84</Typography> <Typography sx={{ mt: 2, ml: 1, fontWeight: "bold" }}>โครงการ</Typography>
-                  </Typography>
-                  <Typography>
-                    <img src={Location} style={{ width: "23%", height: "80%", marginLeft: "5rem" }} />
-                  </Typography>
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Typography sx={{ fontSize: 30, fontWeight: "bold" }} color="text.secondary" gutterBottom>
+                      84
+                    </Typography>
+                    <Typography sx={{ mt: 2, ml: 1, fontWeight: "bold" }} color="text.secondary" gutterBottom>
+                      โครงการ
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: "flex", alignItems: "center", marginLeft: "5rem" }}>
+                    <img src={Location} style={{ width: "23%", height: "80%" }} />
+                  </Box>
                 </div>
               </CardContent>
             </CustomPaper>
           </Grid>
           <Grid item sm={4}>
             <CustomPaper>
-              <CardContent >
+              <CardContent>
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
                   <Typography sx={{ fontSize: 16, fontWeight: "bold" }} color="text.secondary" gutterBottom>
                     จำนวนกล้องทั้งหมด
@@ -96,38 +101,45 @@ const Dashboard = (props) => {
                   </Typography>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", marginLeft: "2rem" }}>
-                  <Typography sx={{ fontSize: 30, fontWeight: "bold", display: "flex" }} color="text.secondary" gutterBottom>
-                    <Typography sx={{ fontSize: "30px", fontWeight: "bold" }}>630</Typography> <Typography sx={{ mt: 2, ml: 1, fontWeight: "bold" }}>กล้อง</Typography>
-                  </Typography>
-                  <Typography>
-                    <img src={cctv} style={{ width: "23%", height: "80%", marginLeft: "5rem" }} />
-                  </Typography>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <Typography sx={{ fontSize: 30, fontWeight: "bold" }} color="text.secondary" gutterBottom>
+                      630
+                    </Typography>
+                    <Typography sx={{ mt: 2, ml: 1, fontWeight: "bold" }} color="text.secondary">
+                      กล้อง
+                    </Typography>
+                  </div>
+                  <Box sx={{ display: "flex", alignItems: "center", marginLeft: "5rem" }}>
+                    <img src={cctv} style={{ width: "23%", height: "80%" }} />
+                  </Box>
                 </div>
               </CardContent>
             </CustomPaper>
           </Grid>
           <Grid item sm={4}>
             <CustomPaper>
-              <CardContent >
+              <CardContent>
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <Typography sx={{ fontSize: 16, fontWeight: "bold",ml:6 }} color="text.secondary" gutterBottom>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold", ml: 6 }} color="text.secondary" gutterBottom>
                     จำนวนกล้อง online
                   </Typography>
                   <Typography sx={{ fontSize: 16, fontWeight: "bold" }} color="text.secondary" gutterBottom>
                     จำนวนกล้อง offline
                   </Typography>
                 </div>
-                <div style={{ display: "flex", }}>
-                  <Typography sx={{ fontSize: 30, fontWeight: "bold", display: "flex" }} color="text.secondary" gutterBottom>
-                    <img src={cctv_online} style={{ width: "15%", height: "100%"}} />
-                    <Typography sx={{ fontSize: "30px",fontWeight: "bold",ml:3 }}>
+                <div style={{ display: "flex" }}>
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <img src={cctv_online} style={{ width: "15%", height: "100%" }} />
+                    <Typography sx={{ fontSize: "30px", fontWeight: "bold", ml: 3 }}>
                       601
                     </Typography>
-                    <img src={cctv_offline} style={{ width: "15%", height: "80", marginLeft: "6rem" }} />
-                    <Typography sx={{ fontSize: "30px",fontWeight: "bold", ml:4 }}>
+                  </Box>
+                  <Box sx={{ display: "flex", alignItems: "center", marginLeft: "6rem" }}>
+                    <img src={cctv_offline} style={{ width: "15%", height: "80px" }} />
+                    <Typography sx={{ fontSize: "30px", fontWeight: "bold", ml: 4 }}>
                       29
                     </Typography>
-                  </Typography>
+                  </Box>
                 </div>
               </CardContent>
             </CustomPaper>
@@ -178,12 +190,11 @@ const Dashboard = (props) => {
               </CustomPaper>
             </Grid>
           </Grid>
-
           <Grid item sm={8}>
             <CustomPaper>
               <iframe width="100%" height="560rem" src="https://www.youtube.com/embed/1M_gPicQpnk?si=T_qJ5CuYjtftqRKg" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
             </CustomPaper>
-          </Grid>
+          </Grid> 
         </Grid>
       </Box >
     </>
