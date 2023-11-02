@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { BrowserRouter, Route, Switch } from "react-router-dom"
 import "./style"
 import Auth from "./component/auth/Auth"
-const TheLayout = React.lazy(() => import("./layout/layout"))
+const TheLayout = React.lazy(() => import("./container/layout"))
 
 class App extends Component {
   render() {

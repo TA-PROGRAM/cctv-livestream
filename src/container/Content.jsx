@@ -1,6 +1,6 @@
 import React, { Suspense } from "react"
 import { useHistory } from "react-router-dom"
-import { Redirect, Route, Switch } from "react-router-dom"
+import { Route, Switch } from "react-router-dom"
 import routes from "../routes"
 import Page401 from '../views/pages/page401/page401';
 const loading = (
