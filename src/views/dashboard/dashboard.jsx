@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import { Box, CardContent, Paper, Grid, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { Loading } from "../../component/customComponent"
-import GLOBAL from '../../GLOBAL'
-import { Map, GoogleApiWrapper } from "google-maps-react";
+import { Loading } from "../../component/customComponent";
+import GLOBAL from '../../GLOBAL';
+import { Map, GoogleApiWrapper, Marker } from "google-maps-react";
+import Location from '../../assets/image/location.png';
+import cctv from '../../assets/image/cctv.png';
+import cctv_online from '../../assets/image/cctv_on.png';
+import cctv_offline from '../../assets/image/cctv_off.png';
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
 }
 
 const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
+  createData('F.1', 'online', '02/09/2023 09:30'),
+  createData('F.2', 'online', '02/09/2023 09:30'),
+  createData('F.3', 'online', '02/09/2023 09:30'),
+  createData('F.4', 'online', '02/09/2023 09:30'),
+  createData('F.5', 'online', '02/09/2023 09:30'),
 ];
 
 const CustomPaper = styled(Paper)(({ theme }) => ({
@@ -26,7 +30,9 @@ const CustomPaper = styled(Paper)(({ theme }) => ({
 }));
 
 const Dashboard = (props) => {
+  const markerPosition = { lat: 14.9788739, lng: 102.0846441 };
   const [loading, setLoading] = useState(true);
+  const center = { lat: 14.9788739, lng: 102.0846441 };
 
   useEffect(() => {
     _fetchData();
@@ -48,12 +54,9 @@ const Dashboard = (props) => {
   });
 
   const mapStyles = {
-    width: "20%",
-    height: "20%",
+    width: "100%",
+    height: "20rem",
   };
-
-  const { center, google } = props;
-
   return (
     <>
       <Loading show={loading} />
@@ -61,37 +64,71 @@ const Dashboard = (props) => {
         <Grid container spacing={2}>
           <Grid item sm={4}>
             <CustomPaper>
-              <CardContent style={{ display: "flex" }}>
-                <Typography sx={{ fontSize: 16, fontWeight: "bold" }} color="text.secondary" gutterBottom>
-                  จำนวน site โครงการทั้งหมด
-                </Typography>
-                <Typography sx={{ fontSize: 13 }} color="text.secondary" gutterBottom>
-                  {formattedDate}AM
-                </Typography>
+              <CardContent >
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }} color="text.secondary" gutterBottom>
+                    จำนวน site โครงการทั้งหมด
+                  </Typography>
+                  <Typography sx={{ fontSize: 13, marginTop: "0.2rem" }} color="text.secondary" gutterBottom>
+                    {formattedDate}AM
+                  </Typography>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", marginLeft: "2rem" }}>
+                  <Typography sx={{ fontSize: 30, fontWeight: "bold", display: "flex" }} color="text.secondary" gutterBottom>
+                    <Typography sx={{ fontSize: "30px" , fontWeight: "bold"}}>84</Typography> <Typography sx={{ mt: 2, ml: 1, fontWeight: "bold" }}>โครงการ</Typography>
+                  </Typography>
+                  <Typography>
+                    <img src={Location} style={{ width: "23%", height: "80%", marginLeft: "5rem" }} />
+                  </Typography>
+                </div>
               </CardContent>
             </CustomPaper>
           </Grid>
           <Grid item sm={4}>
             <CustomPaper>
-              <CardContent>
-                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                  จำนวนกล้องทั้งหมด
-                </Typography>
-                <Typography variant="h5" component="div">
-                  630 กล้อง
-                </Typography>
+              <CardContent >
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }} color="text.secondary" gutterBottom>
+                    จำนวนกล้องทั้งหมด
+                  </Typography>
+                  <Typography sx={{ fontSize: 13, marginTop: "0.2rem" }} color="text.secondary" gutterBottom>
+                    {formattedDate}AM
+                  </Typography>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", marginLeft: "2rem" }}>
+                  <Typography sx={{ fontSize: 30, fontWeight: "bold", display: "flex" }} color="text.secondary" gutterBottom>
+                    <Typography sx={{ fontSize: "30px", fontWeight: "bold" }}>630</Typography> <Typography sx={{ mt: 2, ml: 1, fontWeight: "bold" }}>กล้อง</Typography>
+                  </Typography>
+                  <Typography>
+                    <img src={cctv} style={{ width: "23%", height: "80%", marginLeft: "5rem" }} />
+                  </Typography>
+                </div>
               </CardContent>
             </CustomPaper>
           </Grid>
           <Grid item sm={4}>
             <CustomPaper>
-              <CardContent>
-                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                  จำนวนกล่อง online จำนวนกล้อง offline
-                </Typography>
-                <Typography variant="h5" component="div">
-                  601 29
-                </Typography>
+              <CardContent >
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold",ml:6 }} color="text.secondary" gutterBottom>
+                    จำนวนกล้อง online
+                  </Typography>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }} color="text.secondary" gutterBottom>
+                    จำนวนกล้อง offline
+                  </Typography>
+                </div>
+                <div style={{ display: "flex", }}>
+                  <Typography sx={{ fontSize: 30, fontWeight: "bold", display: "flex" }} color="text.secondary" gutterBottom>
+                    <img src={cctv_online} style={{ width: "15%", height: "100%"}} />
+                    <Typography sx={{ fontSize: "30px",fontWeight: "bold",ml:3 }}>
+                      601
+                    </Typography>
+                    <img src={cctv_offline} style={{ width: "15%", height: "80", marginLeft: "6rem" }} />
+                    <Typography sx={{ fontSize: "30px",fontWeight: "bold", ml:4 }}>
+                      29
+                    </Typography>
+                  </Typography>
+                </div>
               </CardContent>
             </CustomPaper>
           </Grid>
@@ -100,12 +137,13 @@ const Dashboard = (props) => {
               <CustomPaper>
                 <div style={{ position: "relative", width: "100%", height: "20rem" }}>
                   <Map
-                    style={{ position: "absolute", top: "0", left: "0", bottom: "0", right: "0", width: "100%", height: "100%" }}
                     google={props.google}
                     zoom={14}
+                    style={mapStyles}
                     initialCenter={center}
                     center={center}
                   >
+                    <Marker position={{ lat: markerPosition.lat, lng: markerPosition.lng }} />
                   </Map>
                 </div>
               </CustomPaper>
@@ -113,14 +151,12 @@ const Dashboard = (props) => {
             <Grid item mt={2} sm={12}>
               <CustomPaper>
                 <TableContainer component={Paper}>
-                  <Table sx={{ minWidth: 480 }} size="small" aria-label="a dense table">
+                  <Table sx={{ minWidth: 400 }} size="small" aria-label="a dense table">
                     <TableHead>
                       <TableRow>
-                        <TableCell sx={{ fontSize: "12px", backgroundColor: "#83abe6", }}>Dessert </TableCell>
-                        <TableCell sx={{ fontSize: "12px", backgroundColor: "#83abe6", }} align="right">Calories</TableCell>
-                        <TableCell sx={{ fontSize: "12px", backgroundColor: "#83abe6", }} align="right">Fat&nbsp;(g)</TableCell>
-                        <TableCell sx={{ fontSize: "12px", backgroundColor: "#83abe6", }} align="right">Carbs&nbsp;(g)</TableCell>
-                        <TableCell sx={{ fontSize: "12px", backgroundColor: "#83abe6", }} align="right">Protein&nbsp;(g)</TableCell>
+                        <TableCell sx={{ fontSize: "12px", backgroundColor: "#83abe6", }} align="center">ชื่อกล้อง</TableCell>
+                        <TableCell sx={{ fontSize: "12px", backgroundColor: "#83abe6", }} align="center">สถานะกล้อง</TableCell>
+                        <TableCell sx={{ fontSize: "12px", backgroundColor: "#83abe6", }} align="center">Datetime</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -129,13 +165,11 @@ const Dashboard = (props) => {
                           key={row.name}
                           sx={{ '&:last-child td, &:last-child th': { border: 0 }, fontSize: "12px", backgroundColor: "#bcd7ff", }}
                         >
-                          <TableCell component="th" scope="row">
+                          <TableCell component="th" scope="row" align="center">
                             {row.name}
                           </TableCell>
-                          <TableCell sx={{ fontSize: "12px", backgroundColor: "#bcd7ff", }} align="right">{row.calories}</TableCell>
-                          <TableCell sx={{ fontSize: "12px", backgroundColor: "#bcd7ff", }} align="right">{row.fat}</TableCell>
-                          <TableCell sx={{ fontSize: "12px", backgroundColor: "#bcd7ff", }} align="right">{row.carbs}</TableCell>
-                          <TableCell sx={{ fontSize: "12px", backgroundColor: "#bcd7ff", }} align="right">{row.protein}</TableCell>
+                          <TableCell align="center" sx={{ fontSize: "12px", backgroundColor: "#bcd7ff", }}>{row.calories}</TableCell>
+                          <TableCell align="center" sx={{ fontSize: "12px", backgroundColor: "#bcd7ff", }}>{row.fat}</TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
@@ -147,11 +181,7 @@ const Dashboard = (props) => {
 
           <Grid item sm={8}>
             <CustomPaper>
-            <iframe width="100%" height="565rem" src="https://www.youtube.com/embed/PTphL9qR0-E" title="YouTube video player" 
-            frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowfullscreen></iframe>
-
-
+              <iframe width="100%" height="560rem" src="https://www.youtube.com/embed/1M_gPicQpnk?si=T_qJ5CuYjtftqRKg" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
             </CustomPaper>
           </Grid>
         </Grid>
