@@ -8,6 +8,7 @@ import Location from '../../assets/image/location.png';
 import cctv from '../../assets/image/cctv.png';
 import cctv_online from '../../assets/image/cctv_on.png';
 import cctv_offline from '../../assets/image/cctv_off.png';
+import { StyledNum, StyledMap } from "./styled.component";
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -66,24 +67,24 @@ const Dashboard = (props) => {
             <CustomPaper>
               <CardContent>
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }} color="text.secondary" gutterBottom>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }} color="text.secondary" >
                     จำนวน site โครงการทั้งหมด
                   </Typography>
-                  <Typography sx={{ fontSize: 13, marginTop: "0.2rem" }} color="text.secondary" gutterBottom>
+                  <Typography sx={{ fontSize: 13, marginTop: "0.2rem" }} color="text.secondary" >
                     {formattedDate}AM
                   </Typography>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", marginLeft: "2rem" }}>
                   <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Typography sx={{ fontSize: 30, fontWeight: "bold" }} color="text.secondary" gutterBottom>
+                    <StyledNum sx={{ fontSize: 30, fontWeight: "bold" }} color="text.secondary" >
                       84
-                    </Typography>
-                    <Typography sx={{ mt: 2, ml: 1, fontWeight: "bold" }} color="text.secondary" gutterBottom>
+                    </StyledNum>
+                    <Typography sx={{ mt: 2, ml: 1, fontWeight: "bold" }} color="text.secondary" >
                       โครงการ
                     </Typography>
                   </Box>
                   <Box sx={{ display: "flex", alignItems: "center", marginLeft: "5rem" }}>
-                    <img src={Location} style={{ width: "23%", height: "80%" }} />
+                    <img src={Location} style={{ width: "23%", height: "100%" }} />
                   </Box>
                 </div>
               </CardContent>
@@ -93,24 +94,24 @@ const Dashboard = (props) => {
             <CustomPaper>
               <CardContent>
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }} color="text.secondary" gutterBottom>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }} color="text.secondary" >
                     จำนวนกล้องทั้งหมด
                   </Typography>
-                  <Typography sx={{ fontSize: 13, marginTop: "0.2rem" }} color="text.secondary" gutterBottom>
+                  <Typography sx={{ fontSize: 13, marginTop: "0.2rem" }} color="text.secondary" >
                     {formattedDate}AM
                   </Typography>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", marginLeft: "2rem" }}>
                   <div style={{ display: "flex", alignItems: "center" }}>
-                    <Typography sx={{ fontSize: 30, fontWeight: "bold" }} color="text.secondary" gutterBottom>
+                    <StyledNum sx={{ fontSize: 30, fontWeight: "bold" }} color="text.secondary" >
                       630
-                    </Typography>
+                    </StyledNum>
                     <Typography sx={{ mt: 2, ml: 1, fontWeight: "bold" }} color="text.secondary">
                       กล้อง
                     </Typography>
                   </div>
                   <Box sx={{ display: "flex", alignItems: "center", marginLeft: "5rem" }}>
-                    <img src={cctv} style={{ width: "23%", height: "80%" }} />
+                    <img src={cctv} style={{ width: "23%", height: "100%" }} />
                   </Box>
                 </div>
               </CardContent>
@@ -119,26 +120,26 @@ const Dashboard = (props) => {
           <Grid item sm={4}>
             <CustomPaper>
               <CardContent>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <Typography sx={{ fontSize: 16, fontWeight: "bold", ml: 6 }} color="text.secondary" gutterBottom>
+                <div style={{ display: "flex", justifyContent: "space-between", minWidth: "100%" }}>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold", ml: 6 }} color="text.secondary" >
                     จำนวนกล้อง online
                   </Typography>
-                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }} color="text.secondary" gutterBottom>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }} color="text.secondary">
                     จำนวนกล้อง offline
                   </Typography>
                 </div>
-                <div style={{ display: "flex" }}>
+                <div style={{ display: "flex", minWidth: "100%" }}>
                   <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <img src={cctv_online} style={{ width: "15%", height: "100%" }} />
-                    <Typography sx={{ fontSize: "30px", fontWeight: "bold", ml: 3 }}>
+                    <img src={cctv_online} style={{ width: "37%", height: "100%" }} />
+                    <StyledNum >
                       601
-                    </Typography>
+                    </StyledNum>
                   </Box>
                   <Box sx={{ display: "flex", alignItems: "center", marginLeft: "6rem" }}>
-                    <img src={cctv_offline} style={{ width: "15%", height: "80px" }} />
-                    <Typography sx={{ fontSize: "30px", fontWeight: "bold", ml: 4 }}>
+                    <img src={cctv_offline} style={{ width: "37%", height: "100%" }} />
+                    <StyledNum>
                       29
-                    </Typography>
+                    </StyledNum>
                   </Box>
                 </div>
               </CardContent>
@@ -147,23 +148,26 @@ const Dashboard = (props) => {
           <Grid container item sm={4}>
             <Grid item sm={12}>
               <CustomPaper>
-                <div style={{ position: "relative", width: "100%", height: "20rem" }}>
-                  <Map
-                    google={props.google}
-                    zoom={14}
-                    style={mapStyles}
-                    initialCenter={center}
-                    center={center}
-                  >
-                    <Marker position={{ lat: markerPosition.lat, lng: markerPosition.lng }} />
-                  </Map>
-                </div>
+                <StyledMap>
+                  {props.google ? (
+                    <Map
+                      google={props.google}
+                      zoom={14}
+                      initialCenter={center}
+                      center={center}
+                    >
+                      <Marker position={{ lat: markerPosition.lat, lng: markerPosition.lng }} />
+                    </Map>
+                  ) : (
+                    <Typography>Loading map...</Typography>
+                  )}
+                </StyledMap>
               </CustomPaper>
             </Grid>
             <Grid item mt={2} sm={12}>
               <CustomPaper>
                 <TableContainer component={Paper}>
-                  <Table sx={{ minWidth: 400 }} size="small" aria-label="a dense table">
+                  <Table sx={{ minWidth: "100%" }} size="small" aria-label="a dense table">
                     <TableHead>
                       <TableRow>
                         <TableCell sx={{ fontSize: "12px", backgroundColor: "#83abe6", }} align="center">ชื่อกล้อง</TableCell>
@@ -194,7 +198,7 @@ const Dashboard = (props) => {
             <CustomPaper>
               <iframe width="100%" height="560rem" src="https://www.youtube.com/embed/1M_gPicQpnk?si=T_qJ5CuYjtftqRKg" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
             </CustomPaper>
-          </Grid> 
+          </Grid>
         </Grid>
       </Box >
     </>
