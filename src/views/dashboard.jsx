@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import { Box, CardContent, Paper, Grid, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { Loading } from "../../component/customComponent";
-import GLOBAL from '../../GLOBAL';
+import { Loading } from "../component/customComponent";
+import GLOBAL from '../GLOBAL';
 import { Map, GoogleApiWrapper, Marker } from "google-maps-react";
-import Location from '../../assets/image/location.png';
-import cctv from '../../assets/image/cctv.png';
-import cctv_online from '../../assets/image/cctv_on.png';
-import cctv_offline from '../../assets/image/cctv_off.png';
-import { StyledNum, StyledMap } from "./styled.component";
+import Location from '../assets/image/location.png';
+import cctv from '../assets/image/cctv.png';
+import cctv_online from '../assets/image/cctv_on.png';
+import cctv_offline from '../assets/image/cctv_off.png';
+import { StyledNum, StyledMap, StyledBox } from "./styled.component";
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -54,10 +54,7 @@ const Dashboard = (props) => {
     hour12: false,
   });
 
-  const mapStyles = {
-    width: "100%",
-    height: "20rem",
-  };
+
   return (
     <>
       <Loading show={loading} />
@@ -75,17 +72,17 @@ const Dashboard = (props) => {
                   </Typography>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", marginLeft: "2rem" }}>
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <StyledNum sx={{ fontSize: 30, fontWeight: "bold" }} color="text.secondary" >
+                  <StyledBox>
+                    <StyledNum >
                       84
                     </StyledNum>
                     <Typography sx={{ mt: 2, ml: 1, fontWeight: "bold" }} color="text.secondary" >
                       โครงการ
                     </Typography>
-                  </Box>
-                  <Box sx={{ display: "flex", alignItems: "center", marginLeft: "5rem" }}>
+                  </StyledBox>
+                  <StyledBox>
                     <img src={Location} style={{ width: "23%", height: "100%" }} />
-                  </Box>
+                  </StyledBox>
                 </div>
               </CardContent>
             </CustomPaper>
@@ -103,16 +100,16 @@ const Dashboard = (props) => {
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", marginLeft: "2rem" }}>
                   <div style={{ display: "flex", alignItems: "center" }}>
-                    <StyledNum sx={{ fontSize: 30, fontWeight: "bold" }} color="text.secondary" >
+                    <StyledNum>
                       630
                     </StyledNum>
                     <Typography sx={{ mt: 2, ml: 1, fontWeight: "bold" }} color="text.secondary">
                       กล้อง
                     </Typography>
                   </div>
-                  <Box sx={{ display: "flex", alignItems: "center", marginLeft: "5rem" }}>
+                  <StyledBox>
                     <img src={cctv} style={{ width: "23%", height: "100%" }} />
-                  </Box>
+                  </StyledBox>
                 </div>
               </CardContent>
             </CustomPaper>
@@ -129,27 +126,27 @@ const Dashboard = (props) => {
                   </Typography>
                 </div>
                 <div style={{ display: "flex", minWidth: "100%" }}>
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <StyledBox>
                     <img src={cctv_online} style={{ width: "37%", height: "100%" }} />
                     <StyledNum >
                       601
                     </StyledNum>
-                  </Box>
-                  <Box sx={{ display: "flex", alignItems: "center", marginLeft: "6rem" }}>
+                  </StyledBox>
+                  <StyledBox>
                     <img src={cctv_offline} style={{ width: "37%", height: "100%" }} />
                     <StyledNum>
                       29
                     </StyledNum>
-                  </Box>
+                  </StyledBox>
                 </div>
               </CardContent>
             </CustomPaper>
           </Grid>
-          <Grid container item sm={4}>
-            <Grid item sm={12}>
-              <CustomPaper>
-                <StyledMap>
-                  {props.google ? (
+          <Grid container>
+            <Grid item sm={4}>
+              <Grid item sm={12}>
+                <CustomPaper sx={{mt:2}}>
+                  <StyledMap>
                     <Map
                       google={props.google}
                       zoom={14}
@@ -158,46 +155,44 @@ const Dashboard = (props) => {
                     >
                       <Marker position={{ lat: markerPosition.lat, lng: markerPosition.lng }} />
                     </Map>
-                  ) : (
-                    <Typography>Loading map...</Typography>
-                  )}
-                </StyledMap>
-              </CustomPaper>
-            </Grid>
-            <Grid item mt={2} sm={12}>
-              <CustomPaper>
-                <TableContainer component={Paper}>
-                  <Table sx={{ minWidth: "100%" }} size="small" aria-label="a dense table">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell sx={{ fontSize: "12px", backgroundColor: "#83abe6", }} align="center">ชื่อกล้อง</TableCell>
-                        <TableCell sx={{ fontSize: "12px", backgroundColor: "#83abe6", }} align="center">สถานะกล้อง</TableCell>
-                        <TableCell sx={{ fontSize: "12px", backgroundColor: "#83abe6", }} align="center">Datetime</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {rows.map((row) => (
-                        <TableRow
-                          key={row.name}
-                          sx={{ '&:last-child td, &:last-child th': { border: 0 }, fontSize: "12px", backgroundColor: "#bcd7ff", }}
-                        >
-                          <TableCell component="th" scope="row" align="center">
-                            {row.name}
-                          </TableCell>
-                          <TableCell align="center" sx={{ fontSize: "12px", backgroundColor: "#bcd7ff", }}>{row.calories}</TableCell>
-                          <TableCell align="center" sx={{ fontSize: "12px", backgroundColor: "#bcd7ff", }}>{row.fat}</TableCell>
+                  </StyledMap>
+                </CustomPaper>
+              </Grid>
+              <Grid item mt={2} sm={12}>
+                <CustomPaper>
+                  <TableContainer component={Paper}>
+                    <Table sx={{ minWidth: "100%" }} size="small" aria-label="a dense table">
+                      <TableHead>
+                        <TableRow>
+                          <TableCell sx={{ fontSize: "12px", backgroundColor: "#83abe6", }} align="center">ชื่อกล้อง</TableCell>
+                          <TableCell sx={{ fontSize: "12px", backgroundColor: "#83abe6", }} align="center">สถานะกล้อง</TableCell>
+                          <TableCell sx={{ fontSize: "12px", backgroundColor: "#83abe6", }} align="center">Datetime</TableCell>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
+                      </TableHead>
+                      <TableBody>
+                        {rows.map((row) => (
+                          <TableRow
+                            key={row.name}
+                            sx={{ '&:last-child td, &:last-child th': { border: 0 }, fontSize: "12px", backgroundColor: "#bcd7ff", }}
+                          >
+                            <TableCell component="th" scope="row" align="center">
+                              {row.name}
+                            </TableCell>
+                            <TableCell align="center" sx={{ fontSize: "12px", backgroundColor: "#bcd7ff", }}>{row.calories}</TableCell>
+                            <TableCell align="center" sx={{ fontSize: "12px", backgroundColor: "#bcd7ff", }}>{row.fat}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </CustomPaper>
+              </Grid>
+            </Grid>
+            <Grid item sm={8}>
+              <CustomPaper>
+                <iframe width="100%" height="560rem" src="https://www.youtube.com/embed/1M_gPicQpnk?si=T_qJ5CuYjtftqRKg" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
               </CustomPaper>
             </Grid>
-          </Grid>
-          <Grid item sm={8}>
-            <CustomPaper>
-              <iframe width="100%" height="560rem" src="https://www.youtube.com/embed/1M_gPicQpnk?si=T_qJ5CuYjtftqRKg" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
-            </CustomPaper>
           </Grid>
         </Grid>
       </Box >
