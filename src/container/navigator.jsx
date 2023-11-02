@@ -1,27 +1,11 @@
 import React from 'react';
-import Divider from '@mui/material/Divider';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import Box from '@mui/material/Box';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
+import { Divider, Drawer, List, Box, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import img_candidate from '../assets/image/candidate.png';
 import img_license from '../assets/image/license-plate.png';
 import img_home from '../assets/image/home.png';
+import { Link } from 'react-router-dom';
 
-const categories = [
-  {
-    id: '',
-    children: [
-      { id: 'หน้าแรก', src: img_home },
-      { id: 'ค้นหาป้ายทะเบียน', src: img_candidate },
-      { id: 'ค้นหาบุคคล', src: img_license },
-    ],
-  },
-];
 const Logout = [
   {
     id: 'เมนู',
@@ -31,8 +15,6 @@ const Logout = [
   },
 ];
 
-
-
 const item = {
   py: '2px',
   px: 3,
@@ -40,6 +22,16 @@ const item = {
   '&:hover, &:focus': {
     bgcolor: 'rgba(255, 255, 255, 0.08)',
   },
+};
+
+const sidebar = {
+  py: '2px',
+  px: 3,
+  color: 'rgba(255, 255, 255, 0.7)',
+  '&:hover, &:focus': {
+    bgcolor: 'rgba(255, 255, 255, 0.08)',
+  },
+  marginTop: '1rem',
 };
 
 const itemCategory = {
@@ -57,53 +49,46 @@ export default function TheNavigator(props) {
     }
   };
 
-  const handleMenuClickItem = (id) => {
-    // if (id === 'ออกจากระบบ') {
-    //   logout();
-    // }
-  };
-
   const logout = async () => {
     localStorage.clear();
     window.location.reload();
   };
 
+
+
   return (
     <Drawer variant="permanent" {...other}>
-      <List disablePadding>
-        <ListItem sx={{ ...item, ...itemCategory, fontSize: 20, color: '#fff' }}>
-          CCTV Live Streaming
+      <Link style={{ textDecoration: "none" }} to="/">
+        <List disablePadding>
+          <ListItem sx={{ ...itemCategory, fontSize: 20, color: '#fff' }}>
+            CCTV Live Streaming
+          </ListItem>
+        </List>
+      </Link>
+
+      <Link style={{ textDecoration: "none" }} to="/">
+        <ListItem disablePadding>
+          <ListItemButton sx={sidebar}>
+            <img src={img_home} style={{ width: '12%', height: '12%' }} />
+            <ListItemText sx={{ margin: "auto", ml: 3 }}> หน้าแรก </ListItemText>
+          </ListItemButton>
         </ListItem>
-       
-        {categories.map(({ id, children }) => (
-          <Box key={id} sx={{ bgcolor: '#101F33' }}>
-            <ListItem sx={{ py: 2, px: 3 }}>
-              <ListItemText sx={{ color: '#fff' }}>{id}</ListItemText>
-            </ListItem>
-            {children.map(({ id: childId, icon, src }) => (
-              <ListItem disablePadding key={childId}>
-                <ListItemButton onClick={() => handleMenuClickItem(childId)} sx={item}>
-                  <ListItemIcon>{icon}</ListItemIcon>
-                  <img
-                    src={src}
-                    alt={childId}
-                    style={{
-                      width: '12%',
-                      height: '12%',
-                      marginRight: '1rem', 
-                      color:"white",
-                      padding:"2px",
-                      marginBottom:"2px"
-                    }}
-                  />
-                  <ListItemText>{childId}</ListItemText>
-                </ListItemButton>
-              </ListItem>
-            ))}
-            <Divider sx={{ mt: 2 }} />
-          </Box>
-        ))}
-      </List>
+      </Link>
+
+      <ListItem disablePadding>
+        <ListItemButton sx={sidebar}>
+          <img src={img_candidate} style={{ width: '12%', height: '12%' }} />
+          <ListItemText sx={{ margin: "auto", ml: 3 }}> ค้นหาป้ายทะเบียน </ListItemText>
+        </ListItemButton>
+      </ListItem>
+
+      <ListItem disablePadding>
+        <ListItemButton sx={sidebar}>
+          <img src={img_license} style={{ width: '12%', height: '12%' }} />
+          <ListItemText sx={{ margin: "auto", ml: 3 }}> ค้นหาบุคคล </ListItemText>
+        </ListItemButton>
+      </ListItem>
+
       {Logout.map(({ id, name }) => (
         <Box
           key={id}
@@ -112,7 +97,6 @@ export default function TheNavigator(props) {
             bottom: 10,
             left: 0,
             width: 256,
-            // bgcolor: "#101F33",
           }}
         >
           <Divider sx={{ mb: 2 }} />

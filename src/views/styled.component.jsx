@@ -40,7 +40,16 @@ export const StyledNum = styled.div`
     font-family: "Roboto","Helvetica","Arial",sans-serif;
     margin: 0;
   }
-  
+  @media (max-width: 600px) {
+    font-size: 25px;
+    letter-spacing: 0.00938em;
+    margin-bottom: 0.35em;
+    color: rgba(0, 0, 0, 0.6);
+    line-height: 1.5;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    margin: 0;
+    font-weight: bold;
+  }
 `;
 
 export const StyledMap = styled.div`
@@ -58,4 +67,58 @@ export const StyledMap = styled.div`
 export const StyledBox = styled.div`
     display: flex;
     align-items: center;
+`;
+
+export const StyledText = styled.div`
+
+@media (min-width: 1230px) {
+    font-size: 16px;
+    letter-spacing: 0.00938em;
+    margin-bottom: 0.35em;
+    color: rgba(0, 0, 0, 0.6);
+    line-height: 1.5;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    margin: 0;
+    font-weight: bold;
+  }
+
+@media (max-width: 1230px) {
+    font-size: 13px;
+    letter-spacing: 0.00938em;
+    margin-bottom: 0.35em;
+    color: rgba(0, 0, 0, 0.6);
+    line-height: 1.5;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    margin: 0;
+    font-weight: bold;
+  }
+  @media (max-width: 1000px) {
+    font-size: 12px;
+    letter-spacing: 0.00938em;
+    margin-bottom: 0.35em;
+    color: rgba(0, 0, 0, 0.6);
+    line-height: 1.5;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    margin: 0;
+  }
+  @media (max-width: 860px) {
+    font-size: 11px;
+    letter-spacing: 0.00938em;
+    margin-bottom: 0.35em;
+    color: rgba(0, 0, 0, 0.6);
+    line-height: 1.5;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    margin: 0;
+  }
+
+  @media (max-width: 600px) {
+    font-size: 16px;
+    letter-spacing: 0.00938em;
+    margin-bottom: 0.35em;
+    color: rgba(0, 0, 0, 0.6);
+    line-height: 1.5;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    margin: 0;
+  }
+  
 `;

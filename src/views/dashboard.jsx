@@ -8,7 +8,7 @@ import Location from '../assets/image/location.png';
 import cctv from '../assets/image/cctv.png';
 import cctv_online from '../assets/image/cctv_on.png';
 import cctv_offline from '../assets/image/cctv_off.png';
-import { StyledNum, StyledMap, StyledBox } from "./styled.component";
+import { StyledNum, StyledMap, StyledBox, StyledText } from "./styled.component";
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -64,9 +64,9 @@ const Dashboard = (props) => {
             <CustomPaper>
               <CardContent>
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }} color="text.secondary" >
+                  <StyledText>
                     จำนวน site โครงการทั้งหมด
-                  </Typography>
+                  </StyledText>
                   <Typography sx={{ fontSize: 13, marginTop: "0.2rem" }} color="text.secondary" >
                     {formattedDate}AM
                   </Typography>
@@ -76,9 +76,9 @@ const Dashboard = (props) => {
                     <StyledNum >
                       84
                     </StyledNum>
-                    <Typography sx={{ mt: 2, ml: 1, fontWeight: "bold" }} color="text.secondary" >
+                    <StyledText>
                       โครงการ
-                    </Typography>
+                    </StyledText>
                   </StyledBox>
                   <StyledBox>
                     <img src={Location} style={{ width: "23%", height: "100%" }} />
@@ -91,9 +91,9 @@ const Dashboard = (props) => {
             <CustomPaper>
               <CardContent>
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }} color="text.secondary" >
+                  <StyledText>
                     จำนวนกล้องทั้งหมด
-                  </Typography>
+                  </StyledText>
                   <Typography sx={{ fontSize: 13, marginTop: "0.2rem" }} color="text.secondary" >
                     {formattedDate}AM
                   </Typography>
@@ -103,13 +103,13 @@ const Dashboard = (props) => {
                     <StyledNum>
                       630
                     </StyledNum>
-                    <Typography sx={{ mt: 2, ml: 1, fontWeight: "bold" }} color="text.secondary">
+                    <StyledText>
                       กล้อง
-                    </Typography>
+                    </StyledText>
                   </div>
-                  <StyledBox>
-                    <img src={cctv} style={{ width: "23%", height: "100%" }} />
-                  </StyledBox>
+                  <Typography>
+                    <img src={cctv} style={{ width: "20%", height: "100%"}} />
+                  </Typography>
                 </div>
               </CardContent>
             </CustomPaper>
@@ -117,23 +117,23 @@ const Dashboard = (props) => {
           <Grid item sm={4}>
             <CustomPaper>
               <CardContent>
-                <div style={{ display: "flex", justifyContent: "space-between", minWidth: "100%" }}>
-                  <Typography sx={{ fontSize: 16, fontWeight: "bold", ml: 6 }} color="text.secondary" >
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <StyledText>
                     จำนวนกล้อง online
-                  </Typography>
-                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }} color="text.secondary">
+                  </StyledText>
+                  <StyledText>
                     จำนวนกล้อง offline
-                  </Typography>
+                  </StyledText>
                 </div>
-                <div style={{ display: "flex", minWidth: "100%" }}>
+                <div style={{ display: "flex",  minWidth: "100%" }}>
                   <StyledBox>
-                    <img src={cctv_online} style={{ width: "37%", height: "100%" }} />
+                    <img src={cctv_online} style={{ width: "31%", height: "100%" }} />
                     <StyledNum >
                       601
                     </StyledNum>
                   </StyledBox>
                   <StyledBox>
-                    <img src={cctv_offline} style={{ width: "37%", height: "100%" }} />
+                    <img src={cctv_offline} style={{ width: "31%", height: "100%" }} />
                     <StyledNum>
                       29
                     </StyledNum>
@@ -142,10 +142,10 @@ const Dashboard = (props) => {
               </CardContent>
             </CustomPaper>
           </Grid>
-          <Grid container>
-            <Grid item sm={4}>
+          <Grid container sx={{mt:2}}>
+            <Grid item sm={4} sx={{width:"100%"}}>
               <Grid item sm={12}>
-                <CustomPaper sx={{mt:2}}>
+                <CustomPaper sx={{mr:2}}>
                   <StyledMap>
                     <Map
                       google={props.google}
@@ -158,7 +158,7 @@ const Dashboard = (props) => {
                   </StyledMap>
                 </CustomPaper>
               </Grid>
-              <Grid item mt={2} sm={12}>
+              <Grid item mt={2} sm={12}  sx={{mr:2}}>
                 <CustomPaper>
                   <TableContainer component={Paper}>
                     <Table sx={{ minWidth: "100%" }} size="small" aria-label="a dense table">
@@ -188,9 +188,9 @@ const Dashboard = (props) => {
                 </CustomPaper>
               </Grid>
             </Grid>
-            <Grid item sm={8}>
+            <Grid item sm={8} sx={{width:"100%"}}>
               <CustomPaper>
-                <iframe width="100%" height="560rem" src="https://www.youtube.com/embed/1M_gPicQpnk?si=T_qJ5CuYjtftqRKg" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+                <iframe width="100%" height="545rem" src="https://www.youtube.com/embed/1M_gPicQpnk?si=T_qJ5CuYjtftqRKg" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
               </CustomPaper>
             </Grid>
           </Grid>
