@@ -44,9 +44,9 @@ const styles = {
     alignItems: 'center',
   },
   image: {
-    marginRight: 10, 
-    width: 20, 
-    height: 20, 
+    marginRight: 10,
+    width: 20,
+    height: 20,
   },
 };
 
@@ -92,9 +92,15 @@ export default function TheNavigator(props, PERMISSIONS, USER) {
       <List disablePadding>
         {menuItems.map((item, index) => (
           <ListItem disablePadding key={index} sx={styles.listItem}>
-            <Link to={item.to} style={{ textDecoration: "none" ,color:"white"}}>
-              <ListItemButton>
-                <img src={item.src} alt={item.name} style={styles.image} />
+            <Link to={item.to} style={{ textDecoration: "none", color: "white" }}>
+              <ListItemButton sx={{ width: "100%" }}>
+                {item.icon ? (
+                  <ListItemIcon>
+                    {item.icon}
+                  </ListItemIcon>
+                ) : (
+                  <img src={item.src} alt={item.name} style={styles.image} />
+                )}
                 <ListItemText primary={item.name} />
               </ListItemButton>
             </Link>
