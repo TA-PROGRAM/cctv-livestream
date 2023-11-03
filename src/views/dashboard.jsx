@@ -80,9 +80,9 @@ const Dashboard = (props) => {
                       โครงการ
                     </StyledText>
                   </StyledBox>
-                  <StyledBox>
+                  <Typography>
                     <img src={Location} style={{ width: "23%", height: "100%" }} />
-                  </StyledBox>
+                  </Typography>
                 </div>
               </CardContent>
             </CustomPaper>

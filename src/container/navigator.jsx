@@ -92,8 +92,8 @@ export default function TheNavigator(props, PERMISSIONS, USER) {
       <List disablePadding>
         {menuItems.map((item, index) => (
           <ListItem disablePadding key={index} sx={styles.listItem}>
-            <Link to={item.to} style={{ textDecoration: "none", color: "white" }}>
-              <ListItemButton sx={{ width: "100%" }}>
+            <Link to={item.to} style={{ textDecoration: "none", color: "white", width:"100%"}}>
+              <ListItemButton>
                 {item.icon ? (
                   <ListItemIcon>
                     {item.icon}
