@@ -44,9 +44,9 @@ const styles = {
     alignItems: 'center',
   },
   image: {
-    marginRight: 10, 
-    width: 20, 
-    height: 20, 
+    marginRight: 10,
+    width: 20,
+    height: 20,
   },
 };
 
