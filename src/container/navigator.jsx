@@ -1,10 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from "react"
 import { Divider, Drawer, List, Box, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
-import img_candidate from '../assets/image/candidate.png';
-import img_license from '../assets/image/license-plate.png';
-import img_home from '../assets/image/home.png';
 import { Link } from 'react-router-dom';
+import accessMenu from "./menu";
 
 const Logout = [
   {
@@ -40,7 +38,32 @@ const itemCategory = {
   px: 3,
 };
 
-export default function TheNavigator(props) {
+const styles = {
+  listItem: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  image: {
+    marginRight: 10, 
+    width: 20, 
+    height: 20, 
+  },
+};
+
+export default function TheNavigator(props, PERMISSIONS, USER) {
+  const [menuItems, setMenuItems] = useState(accessMenu({ PERMISSIONS }));
+
+  useEffect(() => {
+    fetchData();
+  }, [PERMISSIONS, USER]);
+
+
+  const fetchData = async () => {
+    try {
+      setMenuItems(accessMenu({ PERMISSIONS, USER }));
+    } catch (error) { }
+  }
+
   const { ...other } = props;
 
   const handleMenuClick = (id) => {
@@ -66,28 +89,18 @@ export default function TheNavigator(props) {
         </List>
       </Link>
 
-      <Link style={{ textDecoration: "none" }} to="/">
-        <ListItem disablePadding>
-          <ListItemButton sx={sidebar}>
-            <img src={img_home} style={{ width: '12%', height: '12%' }} />
-            <ListItemText sx={{ margin: "auto", ml: 3 }}> หน้าแรก </ListItemText>
-          </ListItemButton>
-        </ListItem>
-      </Link>
-
-      <ListItem disablePadding>
-        <ListItemButton sx={sidebar}>
-          <img src={img_candidate} style={{ width: '12%', height: '12%' }} />
-          <ListItemText sx={{ margin: "auto", ml: 3 }}> ค้นหาป้ายทะเบียน </ListItemText>
-        </ListItemButton>
-      </ListItem>
-
-      <ListItem disablePadding>
-        <ListItemButton sx={sidebar}>
-          <img src={img_license} style={{ width: '12%', height: '12%' }} />
-          <ListItemText sx={{ margin: "auto", ml: 3 }}> ค้นหาบุคคล </ListItemText>
-        </ListItemButton>
-      </ListItem>
+      <List disablePadding>
+        {menuItems.map((item, index) => (
+          <ListItem disablePadding key={index} sx={styles.listItem}>
+            <Link to={item.to} style={{ textDecoration: "none" ,color:"white"}}>
+              <ListItemButton>
+                <img src={item.src} alt={item.name} style={styles.image} />
+                <ListItemText primary={item.name} />
+              </ListItemButton>
+            </Link>
+          </ListItem>
+        ))}
+      </List>
 
       {Logout.map(({ id, name }) => (
         <Box
