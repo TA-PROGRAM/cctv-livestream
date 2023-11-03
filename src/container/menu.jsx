@@ -1,8 +1,6 @@
 import home from '../assets/image/home.png';
 import license from '../assets/image/license-plate.png'
 import candidate from '../assets/image/candidate.png'
-import AddBusinessIcon from '@mui/icons-material/AddBusiness';
-import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 
 const accessMenu = ({ PERMISSIONS }) => {
   const menuItems = [];
@@ -41,22 +39,15 @@ const accessMenu = ({ PERMISSIONS }) => {
       src: candidate,
     });
   }
-  if (_checkPermission("เพิ่มไซต์") || true) {
+  if (_checkPermission("หน้าแรก") || true) {
     menuItems.push({
       tag: "NavItem",
-      name: "เพิ่มไซต์",
-      to: "/site",
-      icon: <AddBusinessIcon />,
+      name: "หน้าแรก",
+      to: "/",
+      src: home,
     });
   }
-  if (_checkPermission("เพิ่มกล้อง") || true) {
-    menuItems.push({
-      tag: "NavItem",
-      name: "เพิ่มกล้อง",
-      to: "/device",
-      icon: <AddAPhotoIcon />,
-    });
-  }
+
 
   return menuItems;
 };
