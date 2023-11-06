@@ -18,18 +18,17 @@ class ViewComponent extends React.Component {
       show_update: false,
       show_detail: false,
       loading: true,
+      value1 : '10'
     }
   }
-
   async componentDidMount() {
     this._fetchData()
   }
   _fetchData = () =>
     this.setState({ loading: true }, async () => {
       let site = await site_model.getSiteBy()
-
       this.setState({
-        device: site.data,
+        site:site.data,
         loading: false,
       })
     })
@@ -83,7 +82,6 @@ class ViewComponent extends React.Component {
 
   render() {
     const { permission_delete, permission_edit, permission_view, permission_add } = this.props.PERMISSION
-
     const header = (
       <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
         <span className="p-input-icon-right">
@@ -152,7 +150,8 @@ class ViewComponent extends React.Component {
             จัดการอุปกรณ์
           </Typography>
         </Breadcrumbs>
-        <Card title="จัดการไซต์งาน / Manage Site " subTitle={<hr className="opacity-50" />} className={"shadow-3"}>
+        {console.log(this.state.value1)}
+        <Card title="จัดการไซต์งาน / Manage Site " subTitle={<hr className="opacity-50" />} className={"shadow-3 "}>
           <DataTable
             value={this.state?.site}
             tableStyle={{ minWidth: "50rem" }}
