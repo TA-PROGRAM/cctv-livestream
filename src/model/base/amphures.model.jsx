@@ -14,7 +14,7 @@ export default class AmphuresModel extends BaseFetch {
     })
     getAmphuresByProvinceId = (data) =>
     this.authFetch({
-      url: "amphures/getAmphuresByProvinceId",
+      url: "amphures/getAmphuresByProvincesId",
       method: "POST",
       body: JSON.stringify(data),
     })

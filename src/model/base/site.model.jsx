@@ -30,4 +30,28 @@ export default class SiteModel extends BaseFetch {
       method: "POST",
       body: JSON.stringify(data),
     })
+    getAddeersById = (data) =>
+    this.authFetch({
+      url: "site/getAddeersById",
+      method: "POST",
+      body: JSON.stringify(data),
+    })
+    insertSiteAddress = (data) =>
+    this.authFetch({
+      url: "site/insertSiteAddress",
+      method: "POST",
+      body: JSON.stringify(data),
+    })
+    updateSiteAddressById = (data) =>
+    this.authFetch({
+      url: "site/updateSiteAddressById",
+      method: "POST",
+      body: JSON.stringify(data),
+    })
+    getSiteCheckBy = (data) =>
+    this.authFetch({
+      url: "site/getSiteCheckBy",
+      method: "POST",
+      body: JSON.stringify(data),
+    })
 }

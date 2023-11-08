@@ -150,7 +150,6 @@ class ViewComponent extends React.Component {
             จัดการอุปกรณ์
           </Typography>
         </Breadcrumbs>
-        {console.log(this.state.value1)}
         <Card title="จัดการไซต์งาน / Manage Site " subTitle={<hr className="opacity-50" />} className={"shadow-3 "}>
           <DataTable
             value={this.state?.site}
