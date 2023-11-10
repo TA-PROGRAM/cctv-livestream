@@ -73,6 +73,25 @@ class ViewComponent extends React.Component {
     })
   }
 
+  statusBodyTemplate(rowData) {
+    let statusText
+    let statusStyle
+
+    if (rowData.is_active === 1) {
+      statusText = "ใช้งาน"
+      statusStyle = { color: "green" }
+    } else if (rowData.is_active === 2) {
+      statusText = "ไม่ได้ใช้งาน"
+      statusStyle = { color: "red" }
+    }
+
+    return (
+      <span className="status-cell" style={statusStyle}>
+        {statusText}
+      </span>
+    )
+  }
+
   onRowSelect = (event) => {
     this.props.history.push(`/device/detail/${event.data.device_table_uuid}`)
     this.setState({
@@ -111,7 +130,7 @@ class ViewComponent extends React.Component {
       </div>
     )
     let items = []
-    if (permission_view == "1") {
+    if (permission_view == "1" || true) {
       items.push({
         label: "รายละเอียด",
         icon: "pi pi-plus",
@@ -120,16 +139,16 @@ class ViewComponent extends React.Component {
         },
       })
     }
-    if (permission_edit == "1") {
+    if (permission_edit == "1" || true) {
       items.push({
         label: "แก้ไข",
         icon: "pi pi-user-edit",
         command: () => {
-          this.props.history.push(`/year-class/update/${this.state.idSet}`)
+          this.props.history.push(`/update.modal/update/${this.state.idSet}`)
         },
       })
     }
-    if (permission_delete == "1") {
+    if (permission_delete == "1" || true) {
       items.push({
         label: "ลบ",
         icon: "pi pi-times",
@@ -167,9 +186,8 @@ class ViewComponent extends React.Component {
             className={"text-center"}
           >
             <Column field="" header="ลำดับ" body={(row, idx) => idx.rowIndex + 1}></Column>
-            <Column field="device_name" sortable header="ชื่ออุปกรณ์"></Column>
             <Column field="site_name" sortable header="ชื่อไซต์"></Column>
-            <Column field="is_active" sortable header="สถานะ"></Column>
+            <Column field="is_active" body={this.statusBodyTemplate} sortable header="สถานะ"></Column>
             <Column
               field=""
               header="การจัดการ"
@@ -183,7 +201,7 @@ class ViewComponent extends React.Component {
                     style={{ height: "0.5rem", weight: "0.5rem" }}
                     onClick={(event) => {
                       this.menu.toggle(event)
-                      this.setState({ idSet: rowData.device_table_uuid })
+                      this.setState({ idSet: rowData.site_table_uuid })
                     }}
                     aria-controls="popup_menu"
                     aria-haspopup
