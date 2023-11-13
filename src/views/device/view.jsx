@@ -6,6 +6,9 @@ import { Breadcrumbs, Typography } from "@mui/material"
 import NavigateNextIcon from "@mui/icons-material/NavigateNext"
 import { Loading } from "../../component/customComponent"
 import { DeviceModel } from "../../model"
+//เพิ่มจุดนี้
+import InsertModal from "./insert.model"
+
 const device_model = new DeviceModel()
 
 class ViewComponent extends React.Component {
@@ -13,6 +16,7 @@ class ViewComponent extends React.Component {
     super(props)
     this.state = {
       loading: true,
+      value1 : '10'
     }
   }
 
@@ -98,12 +102,13 @@ class ViewComponent extends React.Component {
                 type="submit"
                 style={{ display: "flex", marginLeft: "auto" }}
                 className={"border-round-md h-2rem"}
+                onClick = {()=> this.setState({show_ins:true})}
                 label="เพิ่มอุปกรณ์"
                 severity="primary"
                 rounded
                 size="small"
               />
-            </Link>
+            </Link> 
           </span>
         ) : null}
       </div>
@@ -148,6 +153,8 @@ class ViewComponent extends React.Component {
             จัดการอุปกรณ์
           </Typography>
         </Breadcrumbs>
+
+        {console.log(this.state.value1)}
         <Card title="จัดการอุปกรณ์ / manage device"  className={"shadow-3"}>
           <DataTable
             value={this.state?.device}
@@ -191,6 +198,11 @@ class ViewComponent extends React.Component {
             />
           </DataTable>
         </Card>
+        {/*เพิ่ม insert model*/}
+        <InsertModal
+          show={this.state.show_ins}
+          onClose ={()=> this.setState({show_ins:false})}
+        />
       </>
     )
   }
