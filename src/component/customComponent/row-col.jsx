@@ -1,7 +1,7 @@
 import React from "react";
 
-const Col = ({ md, children }) => {
-  const colClass = `col ${md ? `md:col-${md}` : ""}`;
+const Col = ({ sm,md, children }) => {
+  const colClass = `${sm ? `col-${sm}` : "col"} md:col-6 ${md ? `lg:col-${md}` : ""}`;
 
   return <div className={colClass}>{children}</div>;
 };

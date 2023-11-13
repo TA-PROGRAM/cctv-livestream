@@ -1,28 +1,24 @@
 import React from "react"
 import { Button, Dropdown, Dialog, Toast, InputText, InputTextarea } from "primereact"
-import {
-  SiteModel,
-  ProvicesModel,
-  AmphuresModel,
-  TambonsModel,
-} from "../../model"
+import { SiteModel, ProvicesModel, AmphuresModel, TambonsModel } from "../../model"
 import { Row, Col } from "../../component/customComponent"
 import Swal from "sweetalert2"
-import { Link } from "react-router-dom";
-import './swal.css';
+import "./swal.css"
 
-let user_local = localStorage.getItem("session-user");
-const { username } = JSON.parse(user_local);
+let user_local = localStorage.getItem("session-user")
+const { username } = JSON.parse(user_local)
 
 const site_model = new SiteModel()
-const provinces_model = new ProvicesModel();
-const amphures_model = new AmphuresModel();
-const tambons_model = new TambonsModel();
+const provinces_model = new ProvicesModel()
+const amphures_model = new AmphuresModel()
+const tambons_model = new TambonsModel()
 class InsertModal extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      site_name: '',
+      site_name: "",
+      title_name: "",
+      check_ins: 0,
     }
   }
 
@@ -33,17 +29,28 @@ class InsertModal extends React.Component {
   }
 
   async componentDidMount() {
-    this._fetchData();
+    this._fetchData()
   }
 
-  _fetchData = (params = { pagination: this.state.pagination }) =>
+  _fetchData = () =>
     this.setState({ loading: true }, async () => {
-      let provinces = await provinces_model.getProvincesBy();
+      let provinces = await provinces_model.getProvincesBy()
+      let site_update = await site_model.getSiteById({ site_table_uuid: this.props.id })
+      let { site_table_uuid, site_name, address_table_uuid, provinces_table_uuid, amphures_table_uuid, tambons_table_uuid, zip_code } =
+        site_update.data[0] || {}
       this.setState({
+        site_table_uuid,
+        site_name,
+        address_table_uuid,
+        provinces_table_uuid,
+        amphures_table_uuid,
+        tambons_table_uuid,
+        zip_code,
         provinces: provinces.data,
-      });
-
-    });
+        check_ins: site_update.data.lenght > 0 ? 1 : 0,
+        title_name: site_update.data.lenght > 0 ? "แก้ไขไซต์" : "เพิ่มไซต์",
+      })
+    })
 
   _handleSave = () => {
     if (this.checksave()) {
@@ -61,51 +68,53 @@ class InsertModal extends React.Component {
   }
 
   onProvinces = (e) => {
-    const selectProvince = e;
+    const selectProvince = e
     this.setState({}, async () => {
       let amphures = await amphures_model.getAmphuresByProvinceId({
         provinces_id: selectProvince,
-      });
-      let provinces = await provinces_model.getProvincesBy();
+      })
+      let provinces = await provinces_model.getProvincesBy()
+      let site_update = await site_model.getSiteById({ site_table_uuid: this.props.id })
       this.setState({
         provinces: provinces.data,
         provinces_table_uuid: selectProvince,
         amphures: amphures.data,
         selectProvince,
-      });
-    });
-  };
+      })
+    })
+  }
   onAmphures = (e) => {
-    const selectAmphures = e;
+    const selectAmphures = e
     this.setState({}, async () => {
       let tambons = await tambons_model.getTambonsByIdAmphures({
         amphures_id: selectAmphures,
-      });
+      })
       this.setState({
         amphures_table_uuid: selectAmphures,
         tambons: tambons.data,
-      });
-    });
-  };
+      })
+    })
+  }
   onTambons = (e) => {
-    const selectTambons = e;
+    const selectTambons = e
     this.setState({}, async () => {
       let zip_code_data = await tambons_model.getTambonsById({
         id: selectTambons,
-      });
+      })
 
       this.setState({
         tambons_table_uuid: selectTambons,
         zip_code: zip_code_data.data[0].zip_code,
-      });
-    });
-  };
+      })
+    })
+  }
 
   _handleClose = () => this.props.onClose()
 
   _onSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     const siteObject = {
+      site_table_uuid: this.state.site_table_uuid,
       site_name: this.state.site_name,
       address_table_uuid: this.state.address_table_uuid,
       provinces_table_uuid: this.state.provinces_table_uuid,
@@ -113,8 +122,7 @@ class InsertModal extends React.Component {
       tambons_table_uuid: this.state.tambons_table_uuid,
       zip_code: this.state.zip_code,
       create_by: username,
-    };
-    console.log('siteObject :>> ', siteObject);
+    }
     if (this._checkSubmit()) {
       Swal.fire({
         title: "คุณแน่ใจหรือไม่ ?",
@@ -122,85 +130,77 @@ class InsertModal extends React.Component {
         icon: "warning",
         showCancelButton: true,
         customClass: {
-          container: 'swal2-container',
+          container: "swal2-container",
         },
       }).then(({ value }) => {
-        value && this.setState({ loading: false }, async () => {
-          const res = await site_model.insertSiteAddress(siteObject);
-          if (res.require) {
-            Swal.fire({
-              title: "เพิ่มรายการแล้ว !",
-              text: "",
-              icon: "success",
-              showConfirmButton: false,
-              timer: 2000,
-              customClass: {
-                container: 'swal2-container',
-              },
-            }).then((v) => {
-              this._handleClose();
-              window.location.reload();
-            });
-          } else {
-            this.setState({ loading: false }, () => {
+        value &&
+          this.setState({ loading: false }, async () => {
+            let res
+            this.state.check_ins === 0
+              ? (res = await site_model.insertSiteAddress(siteObject))
+              : (res = await site_model.updateSiteAddress(siteObject))
+
+            if (res.require) {
               Swal.fire({
-                title: "เกิดข้อผิดพลาด !",
-                text: "ไม่สามารถดำเนินการได้ !",
-                icon: "error",
+                title: "เพิ่มรายการแล้ว !",
+                text: "",
+                icon: "success",
+                showConfirmButton: false,
+                timer: 2000,
                 customClass: {
-                  container: 'swal2-container',
+                  container: "swal2-container",
                 },
-              });
-            });
-          }
-        });
-      });
+              }).then((v) => {
+                this._handleClose()
+                window.location.reload()
+              })
+            } else {
+              this.setState({ loading: false }, () => {
+                Swal.fire({
+                  title: "เกิดข้อผิดพลาด !",
+                  text: "ไม่สามารถดำเนินการได้ !",
+                  icon: "error",
+                  customClass: {
+                    container: "swal2-container",
+                  },
+                })
+              })
+            }
+          })
+      })
     }
-  };
+  }
 
   _checkSubmit() {
-    if (
-      this.state.site_name === "" ||
-      this.state.site_name === undefined
-    ) {
+    if (this.state.site_name === "" || this.state.site_name === undefined) {
       Swal.fire({
         title: "กรุณาระบุชื่อไซต์งาน",
         icon: "warning",
-      });
-      return false;
+      })
+      return false
     }
-    if (
-      this.state.provinces_table_uuid === "" ||
-      this.state.provinces_table_uuid === undefined
-    ) {
+    if (this.state.provinces_table_uuid === "" || this.state.provinces_table_uuid === undefined) {
       Swal.fire({
         title: "กรุณาเลือกจังหวัด !!!",
         icon: "warning",
-      });
-      return false;
+      })
+      return false
     }
-    if (
-      this.state.amphures_table_uuid === "" ||
-      this.state.amphures_table_uuid === undefined
-    ) {
+    if (this.state.amphures_table_uuid === "" || this.state.amphures_table_uuid === undefined) {
       Swal.fire({
         title: "กรุณาเลือกอำเภอ",
         icon: "warning",
-      });
-      return false;
+      })
+      return false
     }
-    if (
-      this.state.tambons_table_uuid === "" ||
-      this.state.tambons_table_uuid === undefined
-    ) {
+    if (this.state.tambons_table_uuid === "" || this.state.tambons_table_uuid === undefined) {
       Swal.fire({
         title: "กรุณาเลือกตำบล",
         icon: "warning",
-      });
-      return false;
-    }
-    else {
-      return true;
+      })
+      return false
+    } else {
+      return true
     }
   }
 
@@ -209,27 +209,15 @@ class InsertModal extends React.Component {
       <>
         <Toast ref={(el) => (this.toast = el)} />
         <Dialog
-          header="เพิ่มไซต์งาน"
+          header={this.state.title_name}
           visible={this.props.show}
           style={{ width: "85vh", height: "48vh" }}
           onHide={() => this._handleClose()}
           draggable={false}
           footer={() => (
             <>
-              <Button
-                type="submit"
-                severity="primary"
-                className={"m-1"}
-                label="บันทึก"
-                onClick={this._onSubmit}
-              />
-              <Button
-                type=""
-                severity="secondary"
-                className={"m-1"}
-                label="ยกเลิก"
-                onClick={() => this._handleClose()}
-              />
+              <Button type="submit" severity="primary" className={"m-1"} label="บันทึก" onClick={this._onSubmit} />
+              <Button type="" severity="secondary" className={"m-1"} label="ยกเลิก" onClick={() => this._handleClose()} />
             </>
           )}
         >
@@ -240,10 +228,9 @@ class InsertModal extends React.Component {
               <InputText
                 id="username"
                 className="p-inputtext-sm w-full"
-                value={this.state.site_name}
+                value={this.state.site_name || ""}
                 onChange={(e) => this.setState({ site_name: e.target.value })}
                 placeholder="กรุณาระบุชื่อไซต์งาน"
-                required
               />
             </Col>
           </Row>
@@ -258,12 +245,11 @@ class InsertModal extends React.Component {
                 className={"p-inputtext-sm col-12 p-0"}
                 options={this.state.provinces}
                 onChange={(e) => {
-                  this.onProvinces(e.target.value);
+                  this.onProvinces(e.target.value)
                 }}
                 optionLabel="name_th"
                 optionValue="id"
                 placeholder="เลือกจังหวัด"
-                required
                 filter
               />
             </Col>
@@ -276,12 +262,11 @@ class InsertModal extends React.Component {
                 value={this.state.amphures_table_uuid}
                 options={this.state.amphures}
                 onChange={(e) => {
-                  this.onAmphures(e.target.value);
+                  this.onAmphures(e.target.value)
                 }}
                 optionLabel="name_th"
                 optionValue="id"
                 placeholder="เลือกอำเภอ"
-                required
                 filter
               />
             </Col>
@@ -296,12 +281,11 @@ class InsertModal extends React.Component {
                 value={this.state.tambons_table_uuid}
                 options={this.state.tambons}
                 onChange={(e) => {
-                  this.onTambons(e.target.value);
+                  this.onTambons(e.target.value)
                 }}
                 optionLabel="name_th"
                 optionValue="id"
                 placeholder="เลือกตำบล"
-                required
                 filter
               />
             </Col>
@@ -314,9 +298,7 @@ class InsertModal extends React.Component {
                 className={"p-inputtext-sm col-12"}
                 inputid="locale-user"
                 value={this.state.zip_code || ""}
-                onChange={(e) =>
-                  this.setState({ zip_code: e.target.value })
-                }
+                onChange={(e) => this.setState({ zip_code: e.target.value })}
                 disabled
               />
             </Col>

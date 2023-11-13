@@ -18,7 +18,7 @@ class ViewComponent extends React.Component {
       show_update: false,
       show_detail: false,
       loading: true,
-      value1 : '10'
+      site_table_uuid:''
     }
   }
   async componentDidMount() {
@@ -28,7 +28,7 @@ class ViewComponent extends React.Component {
     this.setState({ loading: true }, async () => {
       let site = await site_model.getSiteBy()
       this.setState({
-        site:site.data,
+        site: site.data,
         loading: false,
       })
     })
@@ -93,7 +93,7 @@ class ViewComponent extends React.Component {
   }
 
   onRowSelect = (event) => {
-    this.props.history.push(`/device/detail/${event.data.device_table_uuid}`)
+    this.props.history.push(`/site/detail/${event.data.site_table_uuid}`)
     this.setState({
       selectedProduct: event.data,
     })
@@ -114,17 +114,17 @@ class ViewComponent extends React.Component {
         </span>
         {permission_add === 1 || true ? (
           <span>
-              <Button
-                icon="pi pi-plus"
-                type="submit"
-                style={{ display: "flex", marginLeft: "auto" }}
-                className={"border-round-md h-2rem"}
-                onClick = {()=> this.setState({show_ins:true})}
-                label="เพิ่มไซต์งาน"
-                severity="primary"
-                rounded
-                size="small"
-              />
+            <Button
+              icon="pi pi-plus"
+              type="submit"
+              style={{ display: "flex", marginLeft: "auto" }}
+              className={"border-round-md h-2rem"}
+              onClick={() => this.setState({ show_ins: true ,site_table_uuid:''})}
+              label="เพิ่มไซต์งาน"
+              severity="primary"
+              rounded
+              size="small"
+            />
           </span>
         ) : null}
       </div>
@@ -135,7 +135,7 @@ class ViewComponent extends React.Component {
         label: "รายละเอียด",
         icon: "pi pi-plus",
         command: () => {
-          this.props.history.push(`/year-class/detail/${this.state.idSet}`)
+          this.props.history.push(`/site/detail/${this.state.site_table_uuid}`)
         },
       })
     }
@@ -144,7 +144,7 @@ class ViewComponent extends React.Component {
         label: "แก้ไข",
         icon: "pi pi-user-edit",
         command: () => {
-          this.props.history.push(`/update.modal/update/${this.state.idSet}`)
+          this.setState({ site_table_uuid: this.state.site_table_uuid, show_ins: true })
         },
       })
     }
@@ -153,7 +153,7 @@ class ViewComponent extends React.Component {
         label: "ลบ",
         icon: "pi pi-times",
         command: () => {
-          this._onDelete(this.state.idSet)
+          this._onDelete(this.state.site_table_uuid)
         },
       })
     }
@@ -201,7 +201,7 @@ class ViewComponent extends React.Component {
                     style={{ height: "0.5rem", weight: "0.5rem" }}
                     onClick={(event) => {
                       this.menu.toggle(event)
-                      this.setState({ idSet: rowData.site_table_uuid })
+                      this.setState({ site_table_uuid: rowData.site_table_uuid })
                     }}
                     aria-controls="popup_menu"
                     aria-haspopup
@@ -212,9 +212,10 @@ class ViewComponent extends React.Component {
           </DataTable>
         </Card>
         <InsertModal
-
+          id={this.state.site_table_uuid}
+          user={this.props.USER.username}
           show={this.state.show_ins}
-          onClose ={()=> this.setState({show_ins:false})}
+          onClose={() => this.setState({ show_ins: false })}
         />
       </>
     )

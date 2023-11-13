@@ -1,13 +1,13 @@
 import React from "react"
 import { Link } from "react-router-dom"
 import Swal from "sweetalert2"
-import { Card, Button, InputText, DataTable, Column, Menu ,Dialog} from "primereact"
+import { Card, Button, InputText, DataTable, Column, Menu, Dialog, Toast } from "primereact"
 import { Breadcrumbs, Typography } from "@mui/material"
 import NavigateNextIcon from "@mui/icons-material/NavigateNext"
 import { Loading } from "../../component/customComponent"
 import { DeviceModel } from "../../model"
 //เพิ่มจุดนี้
-import InsertModal from "./insert.model"
+import InsertModal from "./insert.modal"
 
 const device_model = new DeviceModel()
 
@@ -16,7 +16,7 @@ class ViewComponent extends React.Component {
     super(props)
     this.state = {
       loading: true,
-      value1 : '10'
+      device_table_uuid: "",
     }
   }
 
@@ -26,7 +26,6 @@ class ViewComponent extends React.Component {
   _fetchData = () =>
     this.setState({ loading: true }, async () => {
       let device = await device_model.getDeviceBy()
-
       this.setState({
         device: device.data,
         loading: false,
@@ -42,19 +41,19 @@ class ViewComponent extends React.Component {
     }).then(({ value }) => {
       value &&
         this.setState({ loading: false }, async () => {
-          const res = await year_class_model.deleteYearClassById({
-            year_class_table_uuid: code,
+          const res = await device_model.deleteDeviceById({
+            device_table_uuid: code,
           })
           if (res.require) {
-            Swal.fire({
-              title: "ลบรายการแล้ว !",
-              text: "",
-              icon: "success",
-              showConfirmButton: false,
-              timer: 2000,
-            }).then((v) => {
+            this.toast.show(
+              {
+                severity: "info",
+                summary: "ลบข้อมูล",
+                detail: "ลบข้อมูลสำเร็จ",
+                life: 3000,
+              },
               this._fetchData()
-            })
+            )
           } else {
             this.setState(
               {
@@ -72,7 +71,24 @@ class ViewComponent extends React.Component {
         })
     })
   }
+  statusBodyTemplate(rowData) {
+    let statusText
+    let statusStyle
 
+    if (rowData.is_active === 1) {
+      statusText = "ใช้งาน"
+      statusStyle = { color: "green" }
+    } else if (rowData.is_active === 2) {
+      statusText = "ไม่ได้ใช้งาน"
+      statusStyle = { color: "red" }
+    }
+
+    return (
+      <span className="status-cell" style={statusStyle}>
+        {statusText}
+      </span>
+    )
+  }
   onRowSelect = (event) => {
     this.props.history.push(`/device/detail/${event.data.device_table_uuid}`)
     this.setState({
@@ -102,42 +118,42 @@ class ViewComponent extends React.Component {
                 type="submit"
                 style={{ display: "flex", marginLeft: "auto" }}
                 className={"border-round-md h-2rem"}
-                onClick = {()=> this.setState({show_ins:true})}
+                onClick={() => this.setState({ show_ins: true, device_table_uuid: "" })}
                 label="เพิ่มอุปกรณ์"
                 severity="primary"
                 rounded
                 size="small"
               />
-            </Link> 
+            </Link>
           </span>
         ) : null}
       </div>
     )
     let items = []
-    if (permission_view == "1") {
+    if (permission_view === 1 || true) {
       items.push({
         label: "รายละเอียด",
         icon: "pi pi-plus",
         command: () => {
-          this.props.history.push(`/year-class/detail/${this.state.idSet}`)
+          this.props.history.push(`/device/detail/${this.state.device_table_uuid}`)
         },
       })
     }
-    if (permission_edit == "1") {
+    if (permission_edit === 1 || true) {
       items.push({
         label: "แก้ไข",
         icon: "pi pi-user-edit",
         command: () => {
-          this.props.history.push(`/year-class/update/${this.state.idSet}`)
+          this.setState({ device_table_uuid: this.state.device_table_uuid, show_ins: true })
         },
       })
     }
-    if (permission_delete == "1") {
+    if (permission_delete === 1 || true) {
       items.push({
         label: "ลบ",
         icon: "pi pi-times",
         command: () => {
-          this._onDelete(this.state.idSet)
+          this._onDelete(this.state.device_table_uuid)
         },
       })
     }
@@ -145,6 +161,7 @@ class ViewComponent extends React.Component {
     return (
       <>
         <Loading show={this.state.loading} />
+        <Toast ref={(el) => (this.toast = el)} />
         <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
           <Link style={{ textDecoration: "none", color: "rgba(0, 0, 0, 0.6)" }} to="/">
             หน้าหลัก
@@ -154,8 +171,7 @@ class ViewComponent extends React.Component {
           </Typography>
         </Breadcrumbs>
 
-        {console.log(this.state.value1)}
-        <Card title="จัดการอุปกรณ์ / manage device"  className={"shadow-3"}>
+        <Card title="จัดการอุปกรณ์ / manage device" subTitle={<hr className="opacity-50" />} className={"shadow-3"}>
           <DataTable
             value={this.state?.device}
             tableStyle={{ minWidth: "50rem" }}
@@ -174,7 +190,7 @@ class ViewComponent extends React.Component {
             <Column field="" header="ลำดับ" body={(row, idx) => idx.rowIndex + 1}></Column>
             <Column field="device_name" sortable header="ชื่ออุปกรณ์"></Column>
             <Column field="site_name" sortable header="ชื่อไซต์"></Column>
-            <Column field="is_active" sortable header="สถานะ"></Column>
+            <Column field="is_active" body={this.statusBodyTemplate} sortable header="สถานะ"></Column>
             <Column
               field=""
               header="การจัดการ"
@@ -188,7 +204,7 @@ class ViewComponent extends React.Component {
                     style={{ height: "0.5rem", weight: "0.5rem" }}
                     onClick={(event) => {
                       this.menu.toggle(event)
-                      this.setState({ idSet: rowData.device_table_uuid })
+                      this.setState({ device_table_uuid: rowData.device_table_uuid })
                     }}
                     aria-controls="popup_menu"
                     aria-haspopup
@@ -198,10 +214,11 @@ class ViewComponent extends React.Component {
             />
           </DataTable>
         </Card>
-        {/*เพิ่ม insert model*/}
         <InsertModal
+          id={this.state.device_table_uuid}
+          user={this.props.USER.username}
           show={this.state.show_ins}
-          onClose ={()=> this.setState({show_ins:false})}
+          onClose={() => this.setState({ show_ins: false }, () => this._fetchData())}
         />
       </>
     )
