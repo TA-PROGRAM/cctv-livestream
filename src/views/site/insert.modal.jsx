@@ -36,8 +36,17 @@ class InsertModal extends React.Component {
     this.setState({ loading: true }, async () => {
       let provinces = await provinces_model.getProvincesBy()
       let site_update = await site_model.getSiteById({ site_table_uuid: this.props.id })
-      let { site_table_uuid, site_name, address_table_uuid, provinces_table_uuid, amphures_table_uuid, tambons_table_uuid, zip_code } =
-        site_update.data[0] || {}
+      let { 
+        site_table_uuid, 
+        site_name,
+        address_table_uuid, 
+        provinces_table_uuid, 
+        amphures_table_uuid, 
+        tambons_table_uuid, 
+        zip_code 
+      } = site_update.data[0] || {}
+      let amphures = await amphures_model.getAmphuresByProvinceId({provinces_id:provinces_table_uuid})
+      let tambons = await tambons_model.getTambonsByIdAmphures({amphures_id:amphures_table_uuid})
       this.setState({
         site_table_uuid,
         site_name,
@@ -47,8 +56,10 @@ class InsertModal extends React.Component {
         tambons_table_uuid,
         zip_code,
         provinces: provinces.data,
-        check_ins: site_update.data.lenght > 0 ? 1 : 0,
-        title_name: site_update.data.lenght > 0 ? "แก้ไขไซต์" : "เพิ่มไซต์",
+        amphures: amphures.data,
+        tambons: tambons.data,
+        check_ins: site_update.data.length > 0 ? 1 : 0,
+        title_name: site_update.data.length > 0 ? "แก้ไขไซต์" : "เพิ่มไซต์",
       })
     })
 
@@ -138,7 +149,7 @@ class InsertModal extends React.Component {
             let res
             this.state.check_ins === 0
               ? (res = await site_model.insertSiteAddress(siteObject))
-              : (res = await site_model.updateSiteAddress(siteObject))
+              : (res = await site_model.updateSiteAddressById(siteObject))
 
             if (res.require) {
               Swal.fire({
@@ -240,7 +251,7 @@ class InsertModal extends React.Component {
               <label htmlFor="username">จังหวัด</label>
               <br />
               <Dropdown
-                value={this.state.provinces_table_uuid}
+                value={parseInt(this.state.provinces_table_uuid)}
                 style={{ height: "2.5rem" }}
                 className={"p-inputtext-sm col-12 p-0"}
                 options={this.state.provinces}
@@ -259,7 +270,7 @@ class InsertModal extends React.Component {
               <Dropdown
                 style={{ height: "2.5rem" }}
                 className={"p-inputtext-sm col-12 p-0"}
-                value={this.state.amphures_table_uuid}
+                value={parseInt(this.state.amphures_table_uuid)}
                 options={this.state.amphures}
                 onChange={(e) => {
                   this.onAmphures(e.target.value)
@@ -278,7 +289,7 @@ class InsertModal extends React.Component {
               <Dropdown
                 style={{ height: "2.5rem" }}
                 className={"p-inputtext-sm col-12 p-0"}
-                value={this.state.tambons_table_uuid}
+                value={parseInt(this.state.tambons_table_uuid)}
                 options={this.state.tambons}
                 onChange={(e) => {
                   this.onTambons(e.target.value)
