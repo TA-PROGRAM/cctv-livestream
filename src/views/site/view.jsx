@@ -166,7 +166,7 @@ class ViewComponent extends React.Component {
             หน้าหลัก
           </Link>
           <Typography component="div" style={{ fontWeight: "bold" }}>
-            จัดการอุปกรณ์
+            จัดการไซต์งาน / Manage Site
           </Typography>
         </Breadcrumbs>
         <Card title="จัดการไซต์งาน / Manage Site " subTitle={<hr className="opacity-50" />} className={"shadow-3 "}>

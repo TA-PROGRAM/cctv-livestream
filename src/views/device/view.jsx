@@ -167,11 +167,11 @@ class ViewComponent extends React.Component {
             หน้าหลัก
           </Link>
           <Typography component="div" style={{ fontWeight: "bold" }}>
-            จัดการอุปกรณ์
+            จัดการกล้อง / manage device
           </Typography>
         </Breadcrumbs>
 
-        <Card title="จัดการอุปกรณ์ / manage device" subTitle={<hr className="opacity-50" />} className={"shadow-3"}>
+        <Card title="จัดการกล้อง / manage device" subTitle={<hr className="opacity-50" />} className={"shadow-3"}>
           <DataTable
             value={this.state?.device}
             tableStyle={{ minWidth: "50rem" }}
