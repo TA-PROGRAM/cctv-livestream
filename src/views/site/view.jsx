@@ -42,7 +42,7 @@ class ViewComponent extends React.Component {
     }).then(({ value }) => {
       value &&
         this.setState({ loading: false }, async () => {
-          const res = await year_class_model.deleteSiteById({
+          const res = await site_model.deleteSiteById({
             site_table_uuid: code,
           })
           if (res.require) {

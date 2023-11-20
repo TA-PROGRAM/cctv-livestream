@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
-import { Box, CardContent, Paper, Grid, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Box, CardContent, Paper, Grid, Typography, TableContainer, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
+import { DataGrid } from '@mui/x-data-grid';
 import { Loading } from "../component/customComponent";
 import GLOBAL from '../GLOBAL';
 import { Map, GoogleApiWrapper, Marker } from "google-maps-react";
@@ -9,18 +10,9 @@ import cctv from '../assets/image/cctv.png';
 import cctv_online from '../assets/image/cctv_on.png';
 import cctv_offline from '../assets/image/cctv_off.png';
 import { StyledNum, StyledMap, StyledBox, StyledText } from "./styled.component";
-
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('F.1', 'online', '02/09/2023 09:30'),
-  createData('F.2', 'online', '02/09/2023 09:30'),
-  createData('F.3', 'online', '02/09/2023 09:30'),
-  createData('F.4', 'online', '02/09/2023 09:30'),
-  createData('F.5', 'online', '02/09/2023 09:30'),
-];
+import { DeviceModel, SiteModel } from '../model';
+const device_model = new DeviceModel();
+const site_model = new SiteModel();
 
 const CustomPaper = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -34,12 +26,20 @@ const Dashboard = (props) => {
   const markerPosition = { lat: 14.9788739, lng: 102.0846441 };
   const [loading, setLoading] = useState(true);
   const center = { lat: 14.9788739, lng: 102.0846441 };
+  const [deviceData, setDeviceData] = useState([]);
+  const [siteData, setSiteData] = useState([]);
+  const [selectedSite, setSelectedSite] = useState("");
+  const [selectedDevice, setSelectedDevice] = useState(null);
 
   useEffect(() => {
     _fetchData();
   }, []);
 
-  const _fetchData = (params = { pagination: loading }) => {
+  const _fetchData = async () => {
+    let device = await device_model.getDeviceBy();
+    let site = await site_model.getSiteBy();
+    setDeviceData(device.data);
+    setSiteData(site.data);
     setLoading(true);
     setLoading(false);
   };
@@ -54,6 +54,27 @@ const Dashboard = (props) => {
     hour12: false,
   });
 
+  function convertToThaiTimezone(dateString) {
+    const createDate = new Date(dateString);
+    const thaiDateString = createDate.toLocaleString("en-US", {
+      timeZone: "Asia/Bangkok",
+    });
+    return thaiDateString;
+  }
+  const [age, setAge] = React.useState('');
+
+
+  const filteredDeviceData = selectedSite
+    ? deviceData.filter((device) => device.site_table_uuid === selectedSite)
+    : deviceData;
+
+  const handleRowClick = (params) => {
+    const selectedDeviceId = params.id;
+    const selectedDevice = filteredDeviceData.find(
+      (device) => device.device_table_uuid === selectedDeviceId
+    );
+    setSelectedDevice(selectedDevice);
+  };
 
   return (
     <>
@@ -74,7 +95,7 @@ const Dashboard = (props) => {
                 <div style={{ display: "flex", justifyContent: "space-between", marginLeft: "2rem" }}>
                   <StyledBox>
                     <StyledNum >
-                      84
+                      {siteData.length}
                     </StyledNum>
                     <StyledText>
                       โครงการ
@@ -101,14 +122,14 @@ const Dashboard = (props) => {
                 <div style={{ display: "flex", justifyContent: "space-between", marginLeft: "2rem" }}>
                   <div style={{ display: "flex", alignItems: "center" }}>
                     <StyledNum>
-                      630
+                      {deviceData.length}
                     </StyledNum>
                     <StyledText>
                       กล้อง
                     </StyledText>
                   </div>
                   <Typography>
-                    <img src={cctv} style={{ width: "20%", height: "100%"}} />
+                    <img src={cctv} style={{ width: "20%", height: "100%" }} />
                   </Typography>
                 </div>
               </CardContent>
@@ -125,72 +146,141 @@ const Dashboard = (props) => {
                     จำนวนกล้อง offline
                   </StyledText>
                 </div>
-                <div style={{ display: "flex",  minWidth: "100%" }}>
+                <div style={{ display: "flex", minWidth: "100%" }}>
                   <StyledBox>
                     <img src={cctv_online} style={{ width: "31%", height: "100%" }} />
                     <StyledNum >
-                      601
+                      {deviceData.filter(item => item.is_active === 1).length}
                     </StyledNum>
                   </StyledBox>
                   <StyledBox>
                     <img src={cctv_offline} style={{ width: "31%", height: "100%" }} />
                     <StyledNum>
-                      29
+                      {deviceData.filter(item => item.is_active === 2).length}
                     </StyledNum>
                   </StyledBox>
                 </div>
               </CardContent>
             </CustomPaper>
           </Grid>
-          <Grid container sx={{mt:2}}>
-            <Grid item sm={4} sx={{width:"100%"}}>
-              <Grid item sm={12}>
-                <CustomPaper sx={{mr:2}}>
-                  <StyledMap>
-                    <Map
-                      google={props.google}
-                      zoom={14}
-                      initialCenter={center}
-                      center={center}
-                    >
-                      <Marker position={{ lat: markerPosition.lat, lng: markerPosition.lng }} />
-                    </Map>
-                  </StyledMap>
-                </CustomPaper>
-              </Grid>
-              <Grid item mt={2} sm={12}  sx={{mr:2}}>
-                <CustomPaper>
-                  <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: "100%" }} size="small" aria-label="a dense table">
-                      <TableHead>
-                        <TableRow>
-                          <TableCell sx={{ fontSize: "12px", backgroundColor: "#83abe6", }} align="center">ชื่อกล้อง</TableCell>
-                          <TableCell sx={{ fontSize: "12px", backgroundColor: "#83abe6", }} align="center">สถานะกล้อง</TableCell>
-                          <TableCell sx={{ fontSize: "12px", backgroundColor: "#83abe6", }} align="center">Datetime</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {rows.map((row) => (
-                          <TableRow
-                            key={row.name}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 }, fontSize: "12px", backgroundColor: "#bcd7ff", }}
-                          >
-                            <TableCell component="th" scope="row" align="center">
-                              {row.name}
-                            </TableCell>
-                            <TableCell align="center" sx={{ fontSize: "12px", backgroundColor: "#bcd7ff", }}>{row.calories}</TableCell>
-                            <TableCell align="center" sx={{ fontSize: "12px", backgroundColor: "#bcd7ff", }}>{row.fat}</TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                </CustomPaper>
-              </Grid>
-            </Grid>
-            <Grid item sm={8} sx={{width:"100%"}}>
+          <Grid container sx={{ mt: 1 }}>
+            <Grid item sm={4} sx={{ width: "100%", padding: 2 }}>
               <CustomPaper>
-                <iframe width="100%" height="545rem" src="https://www.youtube.com/embed/1M_gPicQpnk?si=T_qJ5CuYjtftqRKg" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+                <Grid item sm={12}>
+                  <CustomPaper sx={{ mr: 2 }}>
+                    <StyledMap>
+                      <Map
+                        google={props.google}
+                        zoom={14}
+                        initialCenter={center}
+                        center={center}
+                      >
+                        <Marker position={{ lat: markerPosition.lat, lng: markerPosition.lng }} />
+                      </Map>
+                    </StyledMap>
+                  </CustomPaper>
+                </Grid>
+                <Grid item mt={2} sm={12} sx={{ mr: 2 }}>
+                  <div style={{ display: "flex" }}>
+                    <label style={{ marginTop: "1rem", fontWeight: "bold" }}>
+                      ข้อมูลกล้องที่
+                    </label>
+                    <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                      <InputLabel id="demo-select-small-label">Site</InputLabel>
+                      <Select
+                        labelId="demo-select-small-label"
+                        id="demo-select-small"
+                        value={selectedSite}
+                        label="Site"
+                        onChange={(e) => {
+                          setSelectedSite(e.target.value);
+                          setSelectedDevice(null);
+                        }}
+                      >
+                        <MenuItem value="">
+                          <em>None</em>
+                        </MenuItem>
+                        {siteData.map((site) => (
+                          <MenuItem key={site.site_table_uuid} value={site.site_table_uuid}>
+                            {site.site_name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </div>
+                  <TableContainer component={Paper}>
+                    <DataGrid
+                      disableRowSelectionOnClick
+                      sx={{ width: "100%" }}
+                      rows={filteredDeviceData}
+                      columns={[
+                        {
+                          field: "device_name",
+                          headerName: "ชื่ออุปกรณ์",
+                          headerAlign: "center",
+                          align: "center",
+                          minWidth: "auto",
+                          flex: 1,
+                        },
+                        {
+                          field: "is_active",
+                          headerName: "สถานะกล้อง",
+                          headerAlign: "center",
+                          align: "center",
+                          sortable: false,
+                          minWidth: 100,
+                          flex: 1,
+                          renderCell: (params) => (
+                            <span style={{ color: params.row.is_active === 1 ? "green" : "red" }}>
+                              {params.row.is_active === 1 ? "ใช้งาน" : "ไม่ใช้งาน"}
+                            </span>
+                          ),
+                        },
+                        {
+                          field: "create_date",
+                          headerName: "Datetime",
+                          headerAlign: "center",
+                          align: "center",
+                          sortable: false,
+                          minWidth: 200,
+                          flex: 1,
+                          valueGetter: (params) => convertToThaiTimezone(params.value),
+                        }
+                      ]}
+                      getRowId={(row) => row.device_table_uuid}
+                      pageSize={10}
+                      onSelectionModelChange={(selectionModel) => {
+                        const selectedDeviceId = selectionModel[0];
+                        const selectedDevice = filteredDeviceData.find((device) => device.device_table_uuid === selectedDeviceId);
+                        setSelectedDevice(selectedDevice);
+                      }}
+                      initialState={{
+                        pagination: {
+                          paginationModel: { page: 0, pageSize: 10 },
+                        },
+                      }}
+                      pageSizeOptions={[10, 20, 30, 50, 100]}
+                      onRowClick={handleRowClick}
+                    />
+                  </TableContainer>
+                </Grid>
+              </CustomPaper>
+            </Grid>
+            <Grid item sm={8} sx={{ width: "100%" }}>
+              <CustomPaper>
+                {selectedDevice ? (
+                  <iframe
+                    width="900"
+                    height="550"
+                    src={`${selectedDevice.link}`}
+                    frameBorder="0"
+                    allowFullScreen
+                  ></iframe>
+                ) : (
+                  <Typography variant="h6" color="error">
+                    กรุณาเลือก Site
+                  </Typography>
+                )}
               </CustomPaper>
             </Grid>
           </Grid>

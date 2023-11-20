@@ -28,14 +28,15 @@ class InsertModal extends React.Component {
   _fetchData = () =>
     this.setState({ loading: true }, async () => {
       let site = await site_model.getSiteBy({})
-      let device_update = await device_model.getDeviceById({device_table_uuid:this.props.id})
+      let device_update = await device_model.getDeviceById({ device_table_uuid: this.props.id })
       let {
         device_table_uuid,
         device_name,
         site_table_uuid,
         latitude,
         longitude,
-        is_active
+        is_active,
+        link
       } = device_update.data[0] || {}
       this.setState({
         device_table_uuid,
@@ -44,8 +45,9 @@ class InsertModal extends React.Component {
         latitude,
         longitude,
         is_active,
-        check_ins: device_update.data.length > 0 ?1:0,
-        header: device_update.data.length > 0 ?'แก้ไขอุปกรณ์':'เพิ่มอุปกรณ์',
+        link,
+        check_ins: device_update.data.length > 0 ? 1 : 0,
+        header: device_update.data.length > 0 ? 'แก้ไขอุปกรณ์' : 'เพิ่มอุปกรณ์',
         site: site.data,
         loading: false,
       })
@@ -84,6 +86,7 @@ class InsertModal extends React.Component {
       longitude: this.state.longitude,
       is_active: this.state.is_active,
       user_id: this.props.user,
+      link: this.state.link,
     }
     this.checkSubmit() &&
       this.setState({ loading: true }, async () => {
@@ -92,8 +95,8 @@ class InsertModal extends React.Component {
 
         if (res.require) {
           this.setState({ loading: false }, () => {
-          this.toast.show({ severity: "success", summary: "บันทึกข้อมูลสำเร็จ", detail: "บันทึกข้อมูลสำเร็จ", life: 3000 })
-          this._handleClose()
+            this.toast.show({ severity: "success", summary: "บันทึกข้อมูลสำเร็จ", detail: "บันทึกข้อมูลสำเร็จ", life: 3000 })
+            this._handleClose()
           })
         } else {
           this.setState({ loading: false }, () => {
@@ -180,6 +183,18 @@ class InsertModal extends React.Component {
                 className={"p-inputtext-sm w-full"}
                 value={this.state.longitude || ''}
                 onChange={(e) => this.setState({ longitude: e.target.value })}
+                placeholder="กรุณาระบุลองติจูด"
+              />
+            </Col>
+            <Col md={6}>
+              <label htmlFor="link">ลิงค์กล้อง</label>
+              <br />
+              <InputText
+                id="link"
+                style={{ height: "2.5rem" }}
+                className={"p-inputtext-sm w-full"}
+                value={this.state.link || ''}
+                onChange={(e) => this.setState({ link: e.target.value })}
                 placeholder="กรุณาระบุลองติจูด"
               />
             </Col>
