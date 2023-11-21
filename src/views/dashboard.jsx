@@ -23,13 +23,15 @@ const CustomPaper = styled(Paper)(({ theme }) => ({
 }));
 
 const Dashboard = (props) => {
-  const markerPosition = { lat: 14.9788739, lng: 102.0846441 };
+  // const markerPosition = { lat: 14.9788739, lng: 102.0846441 };
   const [loading, setLoading] = useState(true);
   const center = { lat: 14.9788739, lng: 102.0846441 };
   const [deviceData, setDeviceData] = useState([]);
   const [siteData, setSiteData] = useState([]);
   const [selectedSite, setSelectedSite] = useState("");
   const [selectedDevice, setSelectedDevice] = useState(null);
+  const defaultCenter = { lat: 14.9788739, lng: 102.0846441 };
+  const [markerPosition, setMarkerPosition] = useState(defaultCenter);
 
   useEffect(() => {
     _fetchData();
@@ -61,8 +63,6 @@ const Dashboard = (props) => {
     });
     return thaiDateString;
   }
-  const [age, setAge] = React.useState('');
-
 
   const filteredDeviceData = selectedSite
     ? deviceData.filter((device) => device.site_table_uuid === selectedSite)
@@ -73,6 +73,12 @@ const Dashboard = (props) => {
     const selectedDevice = filteredDeviceData.find(
       (device) => device.device_table_uuid === selectedDeviceId
     );
+    if (selectedDevice) {
+      setMarkerPosition({
+        lat: selectedDevice.latitude,
+        lng: selectedDevice.longitude,
+      });
+    }
     setSelectedDevice(selectedDevice);
   };
 
@@ -172,10 +178,10 @@ const Dashboard = (props) => {
                       <Map
                         google={props.google}
                         zoom={14}
-                        initialCenter={center}
-                        center={center}
+                        initialCenter={defaultCenter}
+                        center={markerPosition}
                       >
-                        <Marker position={{ lat: markerPosition.lat, lng: markerPosition.lng }} />
+                        <Marker position={markerPosition} />
                       </Map>
                     </StyledMap>
                   </CustomPaper>
