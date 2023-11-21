@@ -82,6 +82,28 @@ const Dashboard = (props) => {
     setSelectedDevice(selectedDevice);
   };
 
+  // const handleMapClick = (mapProps, map, clickEvent) => {
+  //   const clickedLat = clickEvent.latLng.lat();
+  //   const clickedLng = clickEvent.latLng.lng();
+
+  //   setMarkerPosition({
+  //     lat: clickedLat,
+  //     lng: clickedLng,
+  //   });
+  // };
+
+  // const handleMarkerClick = (device) => {
+
+  //   props.map.setCenter({
+  //     lat: device.latitude,
+  //     lng: device.longitude,
+  //   });
+
+  //   props.map.setZoom(14);
+  // };
+
+
+
   return (
     <>
       <Loading show={loading} />
@@ -181,7 +203,16 @@ const Dashboard = (props) => {
                         initialCenter={defaultCenter}
                         center={markerPosition}
                       >
-                        <Marker position={markerPosition} />
+                        {filteredDeviceData.map((device) => (
+                          <Marker
+                            key={device.device_table_uuid}
+                            position={{
+                              lat: device.latitude,
+                              lng: device.longitude,
+                            }}
+                            title={device.device_name}
+                          />
+                        ))}
                       </Map>
                     </StyledMap>
                   </CustomPaper>
