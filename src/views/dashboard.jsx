@@ -9,7 +9,7 @@ import Location from '../assets/image/location.png';
 import cctv from '../assets/image/cctv.png';
 import cctv_online from '../assets/image/cctv_on.png';
 import cctv_offline from '../assets/image/cctv_off.png';
-import { StyledNum, StyledMap, StyledBox, StyledText } from "./styled.component";
+import { StyledNum, StyledMap, StyledBox, StyledText, StyledMapDash } from "./styled.component";
 import { DeviceModel, SiteModel } from '../model';
 const device_model = new DeviceModel();
 const site_model = new SiteModel();
@@ -81,27 +81,6 @@ const Dashboard = (props) => {
     }
     setSelectedDevice(selectedDevice);
   };
-
-  // const handleMapClick = (mapProps, map, clickEvent) => {
-  //   const clickedLat = clickEvent.latLng.lat();
-  //   const clickedLng = clickEvent.latLng.lng();
-
-  //   setMarkerPosition({
-  //     lat: clickedLat,
-  //     lng: clickedLng,
-  //   });
-  // };
-
-  // const handleMarkerClick = (device) => {
-
-  //   props.map.setCenter({
-  //     lat: device.latitude,
-  //     lng: device.longitude,
-  //   });
-
-  //   props.map.setZoom(14);
-  // };
-
 
 
   return (
@@ -196,7 +175,7 @@ const Dashboard = (props) => {
               <CustomPaper>
                 <Grid item sm={12}>
                   <CustomPaper sx={{ mr: 2 }}>
-                    <StyledMap>
+                    <StyledMapDash>
                       <Map
                         google={props.google}
                         zoom={14}
@@ -210,11 +189,15 @@ const Dashboard = (props) => {
                               lat: device.latitude,
                               lng: device.longitude,
                             }}
+                            icon={{
+                              url: device.is_active  === 1 ? cctv_online : cctv_offline,
+                              scaledSize: new window.google.maps.Size(40, 40),
+                            }}
                             title={device.device_name}
                           />
                         ))}
                       </Map>
-                    </StyledMap>
+                    </StyledMapDash>
                   </CustomPaper>
                 </Grid>
                 <Grid item mt={2} sm={12} sx={{ mr: 2 }}>

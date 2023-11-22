@@ -52,10 +52,22 @@ export const StyledNum = styled.div`
   }
 `;
 
-export const StyledMap = styled.div`
+export const StyledMapDash = styled.div`
     position: relative;
     width: 100%;
     height: 20rem;
+
+  @media (max-width: 600px) {
+    height: 15rem;
+    width: 100%;
+    position: relative;
+  }
+`;
+
+export const StyledMap = styled.div`
+    position: relative;
+    width: 100%;
+    height: 35rem;
 
   @media (max-width: 600px) {
     height: 15rem;
