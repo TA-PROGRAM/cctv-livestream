@@ -217,7 +217,7 @@ class InsertModal extends React.Component {
                 optionLabel="name"
                 optionValue="id"
                 //showClear
-                placeholder="เลือกภาคการเรียน "
+                placeholder="เลือกสถานะ"
                 required
               />
             </Col>
