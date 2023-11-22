@@ -47,7 +47,7 @@ const accessMenu = ({ PERMISSIONS }) => {
       tag: "NavItem",
       name: "เพิ่มไซต์",
       to: "/site",
-      icon: <AddBusinessIcon />,
+      icon: <AddBusinessIcon style={{ color: '#64c0e9' }} />,
     });
   }
   if (_checkPermission("เพิ่มกล้อง") || true) {
@@ -55,7 +55,7 @@ const accessMenu = ({ PERMISSIONS }) => {
       tag: "NavItem",
       name: "เพิ่มกล้อง",
       to: "/device",
-      icon: <AddAPhotoIcon />,
+      icon: <AddAPhotoIcon style={{ color: '#64c0e9' }} />,
     });
   }
   // if (_checkPermission("SmarthPole") || true) {
