@@ -1,7 +1,7 @@
 const GROBAL = {
 
   BASE_SERVER: {
-    URL: 'http://localhost:6203/',
+    URL: 'http://183.88.214.11:6203/',
   },
   API: {
     NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: 'AIzaSyA8_Zs4UJy-HUw8Lc17gxMOxrhNF7pEqCI',
