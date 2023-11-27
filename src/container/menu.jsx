@@ -3,6 +3,7 @@ import license from '../assets/image/license-plate.png'
 import candidate from '../assets/image/candidate.png'
 import AddBusinessIcon from '@mui/icons-material/AddBusiness';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
+import LightbulbIcon from '@mui/icons-material/Lightbulb';
 
 const accessMenu = ({ PERMISSIONS }) => {
   const menuItems = [];
@@ -29,7 +30,7 @@ const accessMenu = ({ PERMISSIONS }) => {
     menuItems.push({
       tag: "NavItem",
       name: "ค้นหาป้ายทะเบียน",
-      to: "/",
+      to: "/search/search-car",
       src: license,
     });
   }
@@ -37,7 +38,7 @@ const accessMenu = ({ PERMISSIONS }) => {
     menuItems.push({
       tag: "NavItem",
       name: "ค้นหาบุคคล",
-      to: "/",
+      to: "/search/search-personnel",
       src: candidate,
     });
   }
@@ -46,7 +47,7 @@ const accessMenu = ({ PERMISSIONS }) => {
       tag: "NavItem",
       name: "เพิ่มไซต์",
       to: "/site",
-      icon: <AddBusinessIcon />,
+      icon: <AddBusinessIcon style={{ color: '#64c0e9' }} />,
     });
   }
   if (_checkPermission("เพิ่มกล้อง") || true) {
@@ -54,10 +55,17 @@ const accessMenu = ({ PERMISSIONS }) => {
       tag: "NavItem",
       name: "เพิ่มกล้อง",
       to: "/device",
-      icon: <AddAPhotoIcon />,
+      icon: <AddAPhotoIcon style={{ color: '#64c0e9' }} />,
     });
   }
-
+  // if (_checkPermission("SmarthPole") || true) {
+  //   menuItems.push({
+  //     tag: "NavItem",
+  //     name: "Smarth Pole",
+  //     to: "/smarth-pole",
+  //     icon: <LightbulbIcon />,
+  //   });
+  // }
   return menuItems;
 };
 

@@ -1,7 +1,7 @@
 import React from "react"
 import { Button, Dropdown, Dialog, Toast, InputText } from "primereact"
 import { DeviceModel, SiteModel } from "../../model"
-import { Row, Col, Loading } from "../../component/customComponent"
+import { Row, Col, Loading, Enum } from "../../component/customComponent"
 import Swal from "sweetalert2"
 const site_model = new SiteModel()
 const device_model = new DeviceModel()
@@ -50,6 +50,7 @@ class InsertModal extends React.Component {
         header: device_update.data.length > 0 ? 'แก้ไขอุปกรณ์' : 'เพิ่มอุปกรณ์',
         site: site.data,
         loading: false,
+        enumIsActive: Enum.isactiveEnum,
       })
     })
 
@@ -116,7 +117,7 @@ class InsertModal extends React.Component {
           className="z-auto"
           header={this.state.header}
           visible={this.props.show}
-          style={{ width: "85vh", height: "48vh" }}
+          style={{ width: "85vh", height: "54vh" }}
           onHide={() => this._handleClose()}
           draggable={false}
           footer={() => (
@@ -196,6 +197,28 @@ class InsertModal extends React.Component {
                 value={this.state.link || ''}
                 onChange={(e) => this.setState({ link: e.target.value })}
                 placeholder="กรุณาระบุลองติจูด"
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col md={6}>
+              <label htmlFor="is_active">ไซต์งาน</label>
+              <br />
+              <Dropdown
+                style={{ height: "2.5rem" }}
+                className={"p-inputtext-sm col-12 p-0"}
+                value={this.state.is_active}
+                options={this.state.enumIsActive}
+                onChange={(e) => {
+                  this.setState({
+                    is_active: e.target.value,
+                  });
+                }}
+                optionLabel="name"
+                optionValue="id"
+                //showClear
+                placeholder="เลือกสถานะ"
+                required
               />
             </Col>
           </Row>

@@ -1,7 +1,7 @@
 import React from "react"
 import { Button, Dropdown, Dialog, Toast, InputText, InputTextarea } from "primereact"
 import { SiteModel, ProvicesModel, AmphuresModel, TambonsModel } from "../../model"
-import { Row, Col } from "../../component/customComponent"
+import { Row, Col, Enum, Loading } from "../../component/customComponent"
 import Swal from "sweetalert2"
 import "./swal.css"
 
@@ -19,6 +19,7 @@ class InsertModal extends React.Component {
       site_name: "",
       title_name: "",
       check_ins: 0,
+      loading: false,
     }
   }
 
@@ -43,7 +44,8 @@ class InsertModal extends React.Component {
         provinces_table_uuid, 
         amphures_table_uuid, 
         tambons_table_uuid, 
-        zip_code 
+        zip_code,
+        is_active
       } = site_update.data[0] || {}
       let amphures = await amphures_model.getAmphuresByProvinceId({provinces_id:provinces_table_uuid})
       let tambons = await tambons_model.getTambonsByIdAmphures({amphures_id:amphures_table_uuid})
@@ -60,6 +62,8 @@ class InsertModal extends React.Component {
         tambons: tambons.data,
         check_ins: site_update.data.length > 0 ? 1 : 0,
         title_name: site_update.data.length > 0 ? "แก้ไขไซต์" : "เพิ่มไซต์",
+        enumIsActive: Enum.isactiveEnum,
+        is_active,
       })
     })
 
@@ -133,6 +137,7 @@ class InsertModal extends React.Component {
       tambons_table_uuid: this.state.tambons_table_uuid,
       zip_code: this.state.zip_code,
       create_by: username,
+      is_active: this.state.is_active,
     }
     if (this._checkSubmit()) {
       Swal.fire({
@@ -222,7 +227,7 @@ class InsertModal extends React.Component {
         <Dialog
           header={this.state.title_name}
           visible={this.props.show}
-          style={{ width: "85vh", height: "48vh" }}
+          style={{ width: "85vh", height: "54vh" }}
           onHide={() => this._handleClose()}
           draggable={false}
           footer={() => (
@@ -311,6 +316,28 @@ class InsertModal extends React.Component {
                 value={this.state.zip_code || ""}
                 onChange={(e) => this.setState({ zip_code: e.target.value })}
                 disabled
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col md={6}>
+              <label htmlFor="is_active">ไซต์งาน</label>
+              <br />
+              <Dropdown
+                style={{ height: "2.5rem" }}
+                className={"p-inputtext-sm col-12 p-0"}
+                value={this.state.is_active}
+                options={this.state.enumIsActive}
+                onChange={(e) => {
+                  this.setState({
+                    is_active: e.target.value,
+                  });
+                }}
+                optionLabel="name"
+                optionValue="id"
+                //showClear
+                placeholder="เลือกสถานะ "
+                required
               />
             </Col>
           </Row>
