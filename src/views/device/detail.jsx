@@ -6,8 +6,10 @@ import { Map, GoogleApiWrapper, Marker } from "google-maps-react"
 import NavigateNextIcon from "@mui/icons-material/NavigateNext"
 import { Loading, Row, Col } from "../../component/customComponent"
 import { DeviceModel } from "../../model"
-import GROBAL from "../../GLOBAL"
+import GLOBAL from "../../GLOBAL"
 import { StyledMap } from "../styled.component"
+import cctv_online from '../../assets/image/cctv_on.png';
+import cctv_offline from '../../assets/image/cctv_off.png';
 
 //เพิ่มจุดนี้
 const device_model = new DeviceModel()
@@ -18,6 +20,9 @@ class Detail extends React.Component {
     this.state = {
       loading: true,
       title: "",
+      latitude: "", 
+      longitude: "", 
+      is_active: "",
     }
   }
 
@@ -28,17 +33,18 @@ class Detail extends React.Component {
     this.setState({ loading: true }, async () => {
       let { code } = this.props.match.params
       let device = await device_model.getDeviceById({ device_table_uuid: code })
-      let { device_name, site_name, latitude, longitude } = device.data[0] || {}
+      let { device_name, site_name, latitude, longitude, is_active } = device.data[0] || {}
       this.setState({
         device_name,
         site_name,
         latitude,
         longitude,
         title: device_name,
+        device: device.data,
         loading: false,
+        is_active,
       })
     })
-
   render() {
     return (
       <>
@@ -98,9 +104,18 @@ class Detail extends React.Component {
                       google={this.props.google}
                       zoom={14}
                       initialCenter={{ lat: 14.9788739, lng: 102.0846441 }}
-                      center={{ lat: 14.9788739, lng: 102.0846441 }}
+                      center={{ lat: this.state.latitude, lng: this.state.longitude, }}
                     >
-                      <Marker position={{ lat: this.state.latitude, lng: this.state.longtitude }} />
+                      <Marker
+                        position={{
+                          lat: this.state.latitude,
+                          lng: this.state.longitude,
+                        }}
+                        icon={{
+                          url: this.state.is_active  === 1 ? cctv_online : cctv_offline,
+                          scaledSize: new window.google.maps.Size(40, 40),
+                        }}
+                      />
                     </Map>
                   </StyledMap>
                 </Col>
@@ -129,5 +144,5 @@ class Detail extends React.Component {
 }
 
 export default GoogleApiWrapper({
-  apiKey: GROBAL.API.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+  apiKey: GLOBAL.API.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
 })(Detail)

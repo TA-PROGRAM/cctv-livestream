@@ -37,22 +37,24 @@ class InsertModal extends React.Component {
     this.setState({ loading: true }, async () => {
       let provinces = await provinces_model.getProvincesBy()
       let site_update = await site_model.getSiteById({ site_table_uuid: this.props.id })
-      let { 
-        site_table_uuid, 
+      let {
+        site_table_uuid,
         site_name,
-        address_table_uuid, 
-        provinces_table_uuid, 
-        amphures_table_uuid, 
-        tambons_table_uuid, 
+        address_table_uuid,
+        provinces_table_uuid,
+        amphures_table_uuid,
+        tambons_table_uuid,
         zip_code,
+        description,
         is_active
       } = site_update.data[0] || {}
-      let amphures = await amphures_model.getAmphuresByProvinceId({provinces_id:provinces_table_uuid})
-      let tambons = await tambons_model.getTambonsByIdAmphures({amphures_id:amphures_table_uuid})
+      let amphures = await amphures_model.getAmphuresByProvinceId({ provinces_id: provinces_table_uuid })
+      let tambons = await tambons_model.getTambonsByIdAmphures({ amphures_id: amphures_table_uuid })
       this.setState({
         site_table_uuid,
         site_name,
         address_table_uuid,
+        description,
         provinces_table_uuid,
         amphures_table_uuid,
         tambons_table_uuid,
@@ -132,12 +134,13 @@ class InsertModal extends React.Component {
       site_table_uuid: this.state.site_table_uuid,
       site_name: this.state.site_name,
       address_table_uuid: this.state.address_table_uuid,
-      provinces_table_uuid: this.state.provinces_table_uuid,
+      provinces_table_uuid: this.state.provinces_table_uuid,    
       amphures_table_uuid: this.state.amphures_table_uuid,
+      description: this.state.description,
       tambons_table_uuid: this.state.tambons_table_uuid,
       zip_code: this.state.zip_code,
       create_by: username,
-      is_active: this.state.is_active,
+      is_active: this.state.is_active,    
     }
     if (this._checkSubmit()) {
       Swal.fire({
@@ -150,7 +153,7 @@ class InsertModal extends React.Component {
         },
       }).then(({ value }) => {
         value &&
-          this.setState({ loading: false }, async () => {
+          this.setState({ loading: false }, async () => {  
             let res
             this.state.check_ins === 0
               ? (res = await site_model.insertSiteAddress(siteObject))
@@ -321,7 +324,7 @@ class InsertModal extends React.Component {
           </Row>
           <Row>
             <Col md={6}>
-              <label htmlFor="is_active">ไซต์งาน</label>
+              <label htmlFor="is_active">สถานะการใช้งาน</label>
               <br />
               <Dropdown
                 style={{ height: "2.5rem" }}
@@ -338,6 +341,17 @@ class InsertModal extends React.Component {
                 //showClear
                 placeholder="เลือกสถานะ "
                 required
+              />
+            </Col>
+            <Col md={6}>
+              <label htmlFor="username">รายละเอียด</label>
+              <br />
+              <InputText
+                id="username"
+                className="p-inputtext-sm w-full"
+                value={this.state.description || ""}
+                onChange={(e) => this.setState({ description: e.target.value })}
+                placeholder="รายละเอียด"
               />
             </Col>
           </Row>
