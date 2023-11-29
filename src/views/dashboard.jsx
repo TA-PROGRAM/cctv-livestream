@@ -144,8 +144,8 @@ const Dashboard = (props) => {
           </Grid>
           <Grid item sm={4}>
             <CustomPaper>
-              <CardContent>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <CardContent sx={{marginTop:"0.5rem"}}>
+                <div style={{ display: "flex", justifyContent: "space-between"}}>
                   <StyledText>
                     จำนวนกล้อง online
                   </StyledText>
