@@ -68,20 +68,23 @@ const Dashboard = (props) => {
     ? deviceData.filter((device) => device.site_table_uuid === selectedSite)
     : deviceData;
 
-  const handleRowClick = (params) => {
-    const selectedDeviceId = params.id;
-    const selectedDevice = filteredDeviceData.find(
-      (device) => device.device_table_uuid === selectedDeviceId
-    );
-    if (selectedDevice) {
-      setMarkerPosition({
-        lat: selectedDevice.latitude,
-        lng: selectedDevice.longitude,
-      });
-    }
-    setSelectedDevice(selectedDevice);
-  };
-
+    const handleRowClick = (params) => {
+      const selectedDeviceId = params.id;
+      const selectedDevice = filteredDeviceData.find(
+        (device) => device.device_table_uuid === selectedDeviceId
+      );
+      if (selectedDevice) {
+        setMarkerPosition({
+          lat: selectedDevice.latitude,
+          lng: selectedDevice.longitude,
+        });
+        
+        setSelectedDevice({
+          ...selectedDevice,
+          device_name: selectedDevice.device_name,
+        });
+      }
+    };
 
   return (
     <>
@@ -144,8 +147,8 @@ const Dashboard = (props) => {
           </Grid>
           <Grid item sm={4}>
             <CustomPaper>
-              <CardContent sx={{marginTop:"0.5rem"}}>
-                <div style={{ display: "flex", justifyContent: "space-between"}}>
+              <CardContent>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
                   <StyledText>
                     จำนวนกล้อง online
                   </StyledText>
@@ -190,7 +193,7 @@ const Dashboard = (props) => {
                               lng: device.longitude,
                             }}
                             icon={{
-                              url: device.is_active  === 1 ? cctv_online : cctv_offline,
+                              url: device.is_active === 1 ? cctv_online : cctv_offline,
                               scaledSize: new window.google.maps.Size(40, 40),
                             }}
                             title={device.device_name}
@@ -289,6 +292,15 @@ const Dashboard = (props) => {
             <Grid item sm={8} sx={{ width: "100%" }}>
               <CustomPaper>
                 {selectedDevice ? (
+                  <Typography variant="h6" color="primary" style={{ color: "black" }}>
+                    {selectedDevice.device_name}
+                  </Typography>
+                ) : (
+                  <Typography variant="h6" color="error">
+                    กรุณาเลือก Site
+                  </Typography>
+                )}
+                {selectedDevice ? (
                   <iframe
                     width="900"
                     height="550"
@@ -296,11 +308,7 @@ const Dashboard = (props) => {
                     frameBorder="0"
                     allowFullScreen
                   ></iframe>
-                ) : (
-                  <Typography variant="h6" color="error">
-                    กรุณาเลือก Site
-                  </Typography>
-                )}
+                ) : null}
               </CustomPaper>
             </Grid>
           </Grid>
