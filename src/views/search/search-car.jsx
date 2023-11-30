@@ -8,6 +8,10 @@ import { Map, GoogleApiWrapper, Marker } from "google-maps-react";
 import Location from '../../assets/image/location.png';
 import { StyledNum, StyledMap, StyledBox, StyledText } from "../styled.component";
 import { DeviceModel, SiteModel } from '../../model';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+
 const device_model = new DeviceModel();
 const site_model = new SiteModel();
 
@@ -83,8 +87,8 @@ const Dashboard = (props) => {
             <Loading show={loading} />
             <Box>
                 <Grid container spacing={2}>
-                <label style={{fontWeight:"bold", fontSize:" 25px", marginLeft:"1rem"}}>ค้นหาหมายเลขป้ายทะเบียน</label>
-                    <Grid sx={{ width: "100%" ,padding:2}}>
+                    <label style={{ fontWeight: "bold", fontSize: " 25px", marginLeft: "1rem" }}>ค้นหาหมายเลขป้ายทะเบียน</label>
+                    <Grid sx={{ width: "100%", padding: 2 }}>
                         <CustomPaper sx={{ display: "flex", justifyContent: "space-between" }}>
                             <CardContent>
                                 <div style={{ marginRight: "9rem", fontWeight: "bold", fontSize: "18px", color: "black" }}>หมายเลขป้ายทะเบียน</div>
@@ -97,27 +101,29 @@ const Dashboard = (props) => {
                             </CardContent>
                             <CardContent>
                                 <div style={{ marginRight: "12rem", fontWeight: "bold", fontSize: "18px", color: "black" }}>วัน/เวลา เริ่มต้น</div>
-                                <TextField
-                                    id="date-start"
-                                    defaultValue="วัน/เวลา เริ่มต้น"
-                                    size="small"
-                                    style={{ width: "20rem" }}
-                                />
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <DatePicker
+                                        sx={{ width: '20rem' }}
+                                        label="วัน/เวลา สิ้นสุด"
+                                        slotProps={{ textField: { size: 'small' } }}
+                                    />
+                                </LocalizationProvider>
                             </CardContent>
                             <CardContent>
                                 <div style={{ marginRight: "12rem", fontWeight: "bold", fontSize: "18px", color: "black" }}>วัน/เวลา สิ้นสุด</div>
-                                <TextField
-                                    id="date-end"
-                                    defaultValue="วัน/เวลา สิ้นสุด"
-                                    size="small"
-                                    style={{ width: "20rem" }}
-                                />
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <DatePicker
+                                        sx={{ width: '20rem' }}
+                                        label="วัน/เวลา สิ้นสุด"
+                                        slotProps={{ textField: { size: 'small' } }}
+                                    />
+                                </LocalizationProvider>
                             </CardContent>
                             <CardContent>
                                 <Stack spacing={2}>
                                     <Button
                                         variant="contained"
-                                        style={{width:"10rem", marginTop:"1.5rem"}}
+                                        style={{ width: "10rem", marginTop: "1.5rem" }}
                                     >
                                         ค้นหา
                                     </Button>
@@ -197,8 +203,8 @@ const Dashboard = (props) => {
                                 </Grid>
                             </CustomPaper>
                         </Grid>
-                        <Grid item sm={4} sx={{ width: "100%"}}>
-                            <CustomPaper sx={{ mr: 2}}>
+                        <Grid item sm={4} sx={{ width: "100%" }}>
+                            <CustomPaper sx={{ mr: 2 }}>
                                 <StyledMap>
                                     <Map
                                         google={props.google}

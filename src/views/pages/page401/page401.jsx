@@ -6,7 +6,6 @@ import logo from '../../../assets/image/logo-404.png'
 function Page401() {
   const history = useHistory()
   return (
-    <div className=" flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
       <div className="flex flex-column align-items-center justify-content-center">
         <div style={{ borderRadius: '56px', padding: '0.3rem', background: 'linear-gradient(180deg, rgba(51, 160, 250, 0.4) 10%, rgba(33, 150, 243, 0) 30%)' }}>
           <div className="w-full surface-card py-8 px-5 sm:px-8 flex flex-column align-items-center" style={{ borderRadius: '53px' }}>
@@ -21,7 +20,6 @@ function Page401() {
           </div>
         </div>
       </div>
-    </div>
   )
 }
 
