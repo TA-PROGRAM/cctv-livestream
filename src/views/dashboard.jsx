@@ -158,13 +158,13 @@ const Dashboard = (props) => {
                 </div>
                 <div style={{ display: "flex", minWidth: "100%" }}>
                   <StyledBox>
-                    <img src={cctv_online} style={{ width: "31%", height: "100%" }} />
+                    <img src={cctv_online} style={{ width: "34%", height: "100%" }} />
                     <StyledNum >
                       {deviceData.filter(item => item.is_active === 1).length}
                     </StyledNum>
                   </StyledBox>
                   <StyledBox>
-                    <img src={cctv_offline} style={{ width: "31%", height: "100%" }} />
+                    <img src={cctv_offline} style={{ width: "34%", height: "100%" }} />
                     <StyledNum>
                       {deviceData.filter(item => item.is_active === 2).length}
                     </StyledNum>
