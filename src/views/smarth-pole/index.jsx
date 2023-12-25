@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 
-const View = React.lazy(() => import('./smarth-pole'))
+const View = React.lazy(() => import('./view'))
 const Device = ({ SESSION }) => {
   const { permission_view, permission_edit, permission_add } = SESSION.PERMISSION
   return (
