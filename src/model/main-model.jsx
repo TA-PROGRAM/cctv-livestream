@@ -9,9 +9,17 @@ class MainModel {
             'Content-Type': 'application/json',
         },
         //mode: 'no-cors',
-        body: data.body,
+        body: data.body || null,
     }).then((response) => response.json().then((e) => e)).catch((error) => ({ require: false, data: [], error, }))
+    directEndpointFetchSmartPoleByGet = async (endpoint, data) => await fetch(endpoint, {
+        method: data.method,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        //mode: 'no-cors',
 
+    }).then((response) => response.json().then((e) => e)).catch((error) => ({ require: false, data: [], error, }))
     authEndpointFetch = async (endpoint, data) => {
         let check_school = ''
         const response = await fetch(endpoint, {
@@ -103,6 +111,8 @@ class MainModel {
 
 export class BaseFetch extends MainModel {
     directFetch = (data) => this.directEndpointFetch(`${GLOBAL.BASE_SERVER.URL}${data.url}`, data)
+    directFetch_Smart_Pole = (data) => this.directEndpointFetchSmartPoleByGet(`${GLOBAL.SMART_POLE_SEVER.URL}${data.url}`, data)
+
     authFetch = (data) => this.authEndpointFetch(`${GLOBAL.BASE_SERVER.URL}${data.url}`, data)
     authUpload = (data) => this.authUploadFile(`${GLOBAL.BASE_SERVER.URL}${data.url}`, data)
     authParamsUpload = (data) => this.authParamsUploadFile(`${GLOBAL.BASE_SERVER.URL}${data.url}/${data.body}`,{method: data.method})
