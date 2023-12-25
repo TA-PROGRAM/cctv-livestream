@@ -4,7 +4,7 @@ import candidate from '../assets/image/candidate.png'
 import AddBusinessIcon from '@mui/icons-material/AddBusiness';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
-
+import GolfCourseIcon from '@mui/icons-material/GolfCourse';
 const accessMenu = ({ PERMISSIONS }) => {
   const menuItems = [];
 
@@ -56,6 +56,14 @@ const accessMenu = ({ PERMISSIONS }) => {
       name: "เพิ่มกล้อง",
       to: "/device",
       icon: <AddAPhotoIcon style={{ color: '#64c0e9' }} />,
+    });
+  }
+  if (_checkPermission("SmarthPole") || true) {
+    menuItems.push({
+      tag: "NavItem",
+      name: "Smart-Pole",
+      to: "/smarth-pole",
+      icon: <LightbulbIcon style={{ color: '#64c0e9' }} />,
     });
   }
   // if (_checkPermission("SmarthPole") || true) {

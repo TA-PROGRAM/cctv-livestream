@@ -14,6 +14,7 @@ import { DeviceModel, SiteModel } from '../model';
 const device_model = new DeviceModel();
 const site_model = new SiteModel();
 
+
 const CustomPaper = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
@@ -32,6 +33,8 @@ const Dashboard = (props) => {
   const [selectedDevice, setSelectedDevice] = useState(null);
   const defaultCenter = { lat: 14.9788739, lng: 102.0846441 };
   const [markerPosition, setMarkerPosition] = useState(defaultCenter);
+  const [namedevice, setNamedevice] = useState([]);
+
 
   useEffect(() => {
     _fetchData();
@@ -40,6 +43,9 @@ const Dashboard = (props) => {
   const _fetchData = async () => {
     let device = await device_model.getDeviceBy();
     let site = await site_model.getSiteBy();
+
+    console.log(name.data);
+    setNamedevice(name.data);
     setDeviceData(device.data);
     setSiteData(site.data);
     setLoading(true);
@@ -88,7 +94,7 @@ const Dashboard = (props) => {
 
   return (
     <>
-      <Loading show={loading} />
+      {/* <Loading show={loading} /> */}
       <Box>
         <Grid container spacing={2}>
           <Grid item sm={4}>
